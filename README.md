@@ -1,30 +1,14 @@
-# React + TypeScript + Vite
+# Personal ERP client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Why I create this project
 
-Currently, two official plugins are available:
+I have created a system to help me with every day challenges, such as managing my time, tracking my work hours, and keeping control of my finance.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Observations
 
-## Expanding the ESLint configuration
+- I've designed this system for me personal use, and any rules can be adjusted to suit your needs. Feel free to make changes without the need for opening a pull request.
+- I will make updates to any rule as needed to meet my requirements. any part of the code system can be change without prior communication.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Future releases
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- [ ] make a todo list
