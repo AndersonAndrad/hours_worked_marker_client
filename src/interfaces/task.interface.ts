@@ -13,6 +13,7 @@ interface Day {
 }
 
 interface Task {
+    _id: string;
     description: string;
     start: Date;
     finish?: Date;
@@ -21,6 +22,7 @@ interface Task {
 }
 
 interface SubTask {
+    _id: string;
     description: string;
-    finished: string;
+    finished: boolean;
 }
