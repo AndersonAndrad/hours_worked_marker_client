@@ -1,9 +1,9 @@
-import { Button } from "@/components/ui/button"
+import {ListTasksPage} from "@/modules/taskManager/pages/list-tasks.page.tsx";
 
 export function App() {
   return (
     <div >
-      <Button variant={'secondary'}>New task</Button>
+      <ListTasksPage></ListTasksPage>
     </div>
 
   )
