@@ -18,6 +18,7 @@ interface Task {
     start: Date;
     finish?: Date;
     finished: boolean;
+    paused: boolean;
     subTasks: SubTask[];
 }
 

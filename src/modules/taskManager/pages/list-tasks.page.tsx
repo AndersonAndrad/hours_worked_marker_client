@@ -1,6 +1,7 @@
 import {generateHash} from "@/app/utils/base64.utils.ts";
-import {CUTask} from "@/modules/taskManager/components/CU-task/CU-task.component.tsx";
-import {Button} from "@/components/ui/button.tsx";
+import {CUTask} from "@/modules/taskManager/components/CU-task.component.tsx";
+import {convertDate} from "@/app/utils/date-converter.utils.ts";
+import {ListTasks} from "@/modules/taskManager/components/list-task.component.tsx";
 
 export function ListTasksPage() {
     const works: Work[] = [
@@ -24,12 +25,36 @@ export function ListTasksPage() {
                         ],
                         start: new Date(),
                         finished: false,
+                        paused: false,
+                    },
+                    {
+                        _id: '1',
+                        description: 'Task 1',
+                        start: new Date('2024-02-04T10:30:00Z'),
+                        finish: new Date('2024-02-04T15:45:30Z'),
+                        finished: false,
+                        paused: false,
+                        subTasks: []
+                    },
+                    {
+                        _id: '2',
+                        description: 'Task 2',
+                        start: new Date('2024-02-04T16:00:00Z'),
+                        finish: new Date('2024-02-04T18:30:00Z'),
+                        finished: true,
+                        paused: false,
+                        subTasks: []
                     }
                 ],
                 resume: ''
             }]
         }
-    ];
+    ].map(work => (
+        {...work, days: work.days.map(day => (
+                {...day, day: convertDate(day.day)}
+            ))
+        })
+    )
 
     return (
         <div>
@@ -43,50 +68,14 @@ export function ListTasksPage() {
                         works.map(work => {
                             return (
                                 /* List works */
-                                <li id={work._id} className="p-4 bg-amber-100 flex flex-col gap-3">
+                                <li id={work._id} className="p-4 flex flex-col gap-3">
                                     <div className="flex flex-row items-center gap-3">
                                         <span className="font-bold">
                                             {work.name}
                                         </span>
-                                        <CUTask></CUTask>
+                                        <CUTask parentWork={work.name}></CUTask>
                                     </div>
-                                    {/* list days */}
-                                    <ul className="p-4">
-                                        {work.days.map(day => {
-                                            return (
-                                                <li id={day._id}>
-                                                    <div>
-                                                        {String(day.day)}
-                                                    </div>
-                                                    {/* list tasks */}
-                                                    <ul className="p-4">
-                                                        {day.tasks && day.tasks.map(task => {
-                                                            return (
-                                                                <li id={task._id}>
-                                                                    <div className="flex flex-row gap-3 items-center">
-                                                                        {task.description}
-                                                                        <Button> New sub task</Button>
-                                                                    </div>
-                                                                    {/* list sub tasks */}
-                                                                    <ul className="p-4">
-                                                                        {task.subTasks.map(subTask => {
-                                                                            return (
-                                                                                <li id={subTask._id}>
-                                                                                    <div>
-                                                                                        {subTask.description}
-                                                                                    </div>
-                                                                                </li>
-                                                                            )
-                                                                        })}
-                                                                    </ul>
-                                                                </li>
-                                                            )
-                                                        })}
-                                                    </ul>
-                                                </li>
-                                            )
-                                        })}
-                                    </ul>
+                                    <ListTasks work={work}></ListTasks>
                                 </li>
                             )
                         })

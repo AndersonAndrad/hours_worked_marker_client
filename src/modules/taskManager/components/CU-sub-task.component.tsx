@@ -9,18 +9,22 @@ import {
 import {Button} from "@/components/ui/button.tsx";
 import {Input} from "@/components/ui/input.tsx";
 
-export function CUTask () {
+interface SubtaskProps {
+    parentTaskName: string;
+}
+
+export function CUSubTask ({parentTaskName}: SubtaskProps) {
     return (
         <>
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button>New task</Button>
+                    <Button>New sub task</Button>
                 </DialogTrigger>
                 <DialogContent>
-                    <DialogHeader>New Task</DialogHeader>
-                    <DialogDescription>Create a task for day</DialogDescription>
+                    <DialogHeader className='font-bold'>New sub Task</DialogHeader>
+                    <DialogDescription>Create a sub task for <span className="font-bold">{parentTaskName}</span></DialogDescription>
                     <div>
-                        <div>
+                        <div className='flex flex-col gap-1'>
                             <label htmlFor="task-description">Description</label>
                             <Input id="task-description"/>
                         </div>
