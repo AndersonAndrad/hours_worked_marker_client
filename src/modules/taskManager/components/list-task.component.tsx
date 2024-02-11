@@ -1,4 +1,5 @@
 import { CheckCheck, Pause, Play, Trash2 } from "lucide-react";
+import { Task, Work } from "@/interfaces/task.interface";
 
 import { Alert } from "@/components/common/alert.component.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
@@ -19,7 +20,7 @@ export function ListTasks({ work }: ListTasksProps) {
         <>
             {/* list days */}
             <ul className="p-4 bg-gray-100 rounded-sm">
-                {work.days.map(day => {
+                {work.days && work.days.map(day => {
                     return (
                         <li key={day._id} id={day._id}>
                             <div className='flex flex-row gap-1'>
