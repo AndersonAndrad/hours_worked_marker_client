@@ -1,7 +1,7 @@
-import {generateHash} from "@/app/utils/base64.utils.ts";
-import {CUTask} from "@/modules/taskManager/components/CU-task.component.tsx";
-import {convertDate} from "@/app/utils/date-converter.utils.ts";
-import {ListTasks} from "@/modules/taskManager/components/list-task.component.tsx";
+import { CUTask } from "@/modules/taskManager/components/CU-task.component.tsx";
+import { ListTasks } from "@/modules/taskManager/components/list-task.component.tsx";
+import { convertDate } from "@/app/utils/date-converter.utils.ts";
+import { generateHash } from "@/app/utils/base64.utils.ts";
 
 export function ListTasksPage() {
     const works: Work[] = [
@@ -50,8 +50,9 @@ export function ListTasksPage() {
             }]
         }
     ].map(work => (
-        {...work, days: work.days.map(day => (
-                {...day, day: convertDate(day.day)}
+        {
+            ...work, days: work.days.map(day => (
+                { ...day, day: convertDate(day.day) }
             ))
         })
     )
@@ -68,7 +69,7 @@ export function ListTasksPage() {
                         works.map(work => {
                             return (
                                 /* List works */
-                                <li id={work._id} className="p-4 flex flex-col gap-3">
+                                <li key={work._id} id={work._id} className="p-4 flex flex-col gap-3">
                                     <div className="flex flex-row items-center gap-3">
                                         <span className="font-bold">
                                             {work.name}

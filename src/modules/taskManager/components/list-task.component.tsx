@@ -1,16 +1,17 @@
-import {CUSubTask} from "@/modules/taskManager/components/CU-sub-task.component.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {CheckCheck, Pause, Play, Trash2} from "lucide-react";
-import {Alert} from "@/components/common/alert.component.tsx";
-import {Badge} from "@/components/ui/badge.tsx";
-import {calculateTotalTimeWorked} from "@/app/utils/date-converter.utils.ts";
+import { CheckCheck, Pause, Play, Trash2 } from "lucide-react";
+
+import { Alert } from "@/components/common/alert.component.tsx";
+import { Badge } from "@/components/ui/badge.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { CUSubTask } from "@/modules/taskManager/components/CU-sub-task.component.tsx";
+import { calculateTotalTimeWorked } from "@/app/utils/date-converter.utils.ts";
 
 interface ListTasksProps {
     work: Work;
 }
-export function ListTasks({work}: ListTasksProps){
+export function ListTasks({ work }: ListTasksProps) {
     const timeWorked = (tasks: Task[]): string => {
-        const {hours, minutes, seconds} = calculateTotalTimeWorked(tasks);
+        const { hours, minutes, seconds } = calculateTotalTimeWorked(tasks);
         return `${hours}:${minutes}:${seconds}`
     }
 
@@ -36,10 +37,10 @@ export function ListTasks({work}: ListTasksProps){
                                                     <Alert title={`Alert, you are deleting`} description={`Do you want delete ${task.description} ?`}>
                                                         <Button><Trash2 /></Button>
                                                     </Alert>
-                                                    { !task.finished && <Button disabled={!task.paused}><Play /></Button>}
-                                                    { !task.finished && <Button disabled={task.paused}><Pause /></Button>}
-                                                    { !task.finished && <Button disabled={task.finished}><CheckCheck /></Button>}
-                                                    { !task.finished && <CUSubTask parentTaskName={task.description}></CUSubTask>}
+                                                    {!task.finished && <Button disabled={!task.paused}><Play /></Button>}
+                                                    {!task.finished && <Button disabled={task.paused}><Pause /></Button>}
+                                                    {!task.finished && <Button disabled={task.finished}><CheckCheck /></Button>}
+                                                    {!task.finished && <CUSubTask parentTaskName={task.description}></CUSubTask>}
                                                 </div>
                                             </div>
                                             {/* list sub tasks */}
@@ -47,8 +48,11 @@ export function ListTasks({work}: ListTasksProps){
                                                 {task.subTasks.map(subTask => {
                                                     return (
                                                         <li key={subTask._id} id={subTask._id}>
-                                                            <div>
+                                                            <div className="flex flex-row items-center justify-between">
                                                                 {subTask.description}
+                                                                <Alert title={`Alert, you are deleting a sub task`} description={`Do you want delete ${subTask.description} ?`}>
+                                                                    <Button><Trash2 /></Button>
+                                                                </Alert>
                                                             </div>
                                                         </li>
                                                     )
