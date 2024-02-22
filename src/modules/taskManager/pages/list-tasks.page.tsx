@@ -1,12 +1,21 @@
 import { CUTask } from "@/modules/taskManager/components/CU-task.component.tsx";
 import { ListTasks } from "@/modules/taskManager/components/list-task.component.tsx";
 import { useWork } from "@/app/contexts/work.context";
+import { useEffect } from 'react';
+import { serverApi } from '@/infra/api/server.api.ts';
 
 export function ListTasksPage() {
     const { works } = useWork();
 
+    useEffect(() => {
+        serverApi.get('/users').then(({data}) => {
+            console.log(JSON.parse(data))
+
+        })
+    }, [] );
+
     return (
-        <div>
+        <div className="bg-gray-800 h-screen text-blue-100">
             <header>
                 <span className="font-bold">Tasks</span>
             </header>
