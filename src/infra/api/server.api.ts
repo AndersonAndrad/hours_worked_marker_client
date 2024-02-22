@@ -1,5 +1,8 @@
 import { Axios } from 'axios';
 
-export const serverApi = new Axios({
-    baseURL: 'http://localhost:5173/api'
-})
+export const serverApi = new Axios( {
+    baseURL: 'http://localhost:5173/api',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+} );
