@@ -32,7 +32,7 @@ export function ListTasks( { work }: ListTasksProps ) {
                                 </div>
                             </div>
                             {/* list sub tasks */ }
-                            <ul className="p-4">
+                            <ul className="p-4 flex flex-col gap-2">
                                 { task.subTasks && task.subTasks.map( subTask => {
                                     return (
                                         <li key={ subTask._id } id={ subTask._id }>
