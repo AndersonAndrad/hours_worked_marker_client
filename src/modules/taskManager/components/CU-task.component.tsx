@@ -1,5 +1,6 @@
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogDescription,
     DialogFooter,
@@ -50,8 +51,12 @@ export function CUTask( { parentWork }: TaskProps ) {
                         </div>
                     </div>
                     <DialogFooter>
-                        <Button variant={ 'secondary' }>Cancel</Button>
-                        <Button onClick={ () => registerTask() }>Save</Button>
+                        <DialogClose>
+                            <Button variant={ 'secondary' }>Cancel</Button>
+                        </DialogClose>
+                        <DialogClose>
+                            <Button onClick={ () => registerTask() }>Save</Button>
+                        </DialogClose>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
