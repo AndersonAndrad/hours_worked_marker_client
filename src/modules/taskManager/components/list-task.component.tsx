@@ -1,72 +1,56 @@
-import { CheckCheck, Pause, Play, Trash2 } from "lucide-react";
-import { Task, Work } from "@/interfaces/task.interface";
+import { CheckCheck, Pause, Play, Trash2 } from 'lucide-react';
+import { Work } from '@/interfaces/task.interface';
 
-import { Alert } from "@/components/common/alert.component.tsx";
-import { Badge } from "@/components/ui/badge.tsx";
-import { Button } from "@/components/ui/button.tsx";
-import { CUSubTask } from "@/modules/taskManager/components/CU-sub-task.component.tsx";
-import { calculateTotalTimeWorked } from "@/app/utils/date-converter.utils.ts";
+import { Alert } from '@/components/common/alert.component.tsx';
+import { Button } from '@/components/ui/button.tsx';
+import { CUSubTask } from '@/modules/taskManager/components/CU-sub-task.component.tsx';
 
 interface ListTasksProps {
     work: Work;
 }
-export function ListTasks({ work }: ListTasksProps) {
-    const timeWorked = (tasks: Task[]): string => {
-        const { hours, minutes, seconds } = calculateTotalTimeWorked(tasks);
-        return `${hours}:${minutes}:${seconds}`
-    }
 
+export function ListTasks( { work }: ListTasksProps ) {
     return (
         <>
-            {/* list days */}
-            <ul className="p-4 bg-gray-100 rounded-sm">
-                {work.days && work.days.map(day => {
+            <ul className="p-4">
+                { work.tasks && work.tasks.map( task => {
                     return (
-                        <li key={day._id} id={day._id}>
-                            <div className='flex flex-row gap-1'>
-                                <span className='font-bold'>{String(day.day)}</span>
-                                {day.tasks && <Badge>Worked: {timeWorked(day.tasks)}</Badge>}
+                        <li key={ task._id } id={ task._id }>
+                            <div className="flex flex-row gap-3 items-center">
+                                <span className="w-full">{ task.name }</span>
+                                <div className="flex flex-row justify-end gap-2 w-full">
+                                    <Alert
+                                        title={ `Alert, you are deleting` }
+                                        description={ `Do you want delete ${ task.name } ?`
+                                        }>
+                                        <Button><Trash2/></Button>
+                                    </Alert>
+                                    { !task.finished && <Button disabled={ !task.paused }><Play/></Button> }
+                                    { !task.finished && <Button disabled={ task.paused }><Pause/></Button> }
+                                    { !task.finished && <Button disabled={ task.finished }><CheckCheck/></Button> }
+                                    { !task.finished && <CUSubTask task={ task }></CUSubTask> }
+                                </div>
                             </div>
-                            {/* list tasks */}
+                            {/* list sub tasks */ }
                             <ul className="p-4">
-                                {day.tasks && day.tasks.map(task => {
+                                { task.subTasks && task.subTasks.map( subTask => {
                                     return (
-                                        <li key={task._id} id={task._id}>
-                                            <div className="flex flex-row gap-3 items-center">
-                                                <span className='w-full'>{task.description}</span>
-                                                <div className='flex flex-row justify-end gap-2 w-full'>
-                                                    <Alert title={`Alert, you are deleting`} description={`Do you want delete ${task.description} ?`}>
-                                                        <Button><Trash2 /></Button>
-                                                    </Alert>
-                                                    {!task.finished && <Button disabled={!task.paused}><Play /></Button>}
-                                                    {!task.finished && <Button disabled={task.paused}><Pause /></Button>}
-                                                    {!task.finished && <Button disabled={task.finished}><CheckCheck /></Button>}
-                                                    {!task.finished && <CUSubTask parentTaskName={task.description}></CUSubTask>}
-                                                </div>
+                                        <li key={ subTask._id } id={ subTask._id }>
+                                            <div className="flex flex-row items-center justify-between">
+                                                { subTask.description }
+                                                <Alert title={ `Alert, you are deleting a sub task` }
+                                                       description={ `Do you want delete ${ subTask.description } ?` }>
+                                                    <Button><Trash2/></Button>
+                                                </Alert>
                                             </div>
-                                            {/* list sub tasks */}
-                                            <ul className="p-4">
-                                                {task.subTasks.map(subTask => {
-                                                    return (
-                                                        <li key={subTask._id} id={subTask._id}>
-                                                            <div className="flex flex-row items-center justify-between">
-                                                                {subTask.description}
-                                                                <Alert title={`Alert, you are deleting a sub task`} description={`Do you want delete ${subTask.description} ?`}>
-                                                                    <Button><Trash2 /></Button>
-                                                                </Alert>
-                                                            </div>
-                                                        </li>
-                                                    )
-                                                })}
-                                            </ul>
                                         </li>
-                                    )
-                                })}
+                                    );
+                                } ) }
                             </ul>
                         </li>
-                    )
-                })}
+                    );
+                } ) }
             </ul>
         </>
-    )
+    );
 }

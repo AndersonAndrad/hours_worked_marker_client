@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState } from 'react';
 
-import { Task, Work } from '@/interfaces/task.interface';
+import { SubTask, Task, Work } from '@/interfaces/task.interface';
 
 interface WorkContextProviderProps {
     children: React.ReactNode;
@@ -12,6 +12,7 @@ interface WorkContextProps {
     works: Work[]
     setWork: ( work: Work ) => void,
     insertTaskToWork: ( task: Task, workId: string ) => void;
+    insertSubTaskToTask: ( subtask: SubTask, taskId: string ) => void;
 }
 
 const WorkContext = createContext<WorkContextProps>( {} as WorkContextProps );
@@ -27,28 +28,32 @@ export function WorkContextProvider( { children }: WorkContextProviderProps ) {
         setWorks( ( prevWorks ) => {
             return prevWorks.map( ( work ) => {
                 if ( work._id === workId ) {
-                    // Update the tasks array for the specific work
-                    return {
-                        ...work,
-                        tasks: [ ...work.tasks, task ],
-                    };
+                    work.tasks.push( task );
                 }
                 return work;
             } );
         } );
     };
 
-    /**
-     * @TODO: implement to register day
-     * @TODO: implement to remove day
-     * @TODO: implement to register task
-     * @TODO: implement to remove task
-     * @TODO: implement to register sub task
-     * @TODO: implement to remove sub task
-     */
+    const insertSubTaskToTask: WorkContextProps['insertSubTaskToTask'] = ( subtask: SubTask, taskId: string ) => {
+        const cacheWorks = works.map( work => {
+            return {
+                ...work,
+                tasks: work.tasks.map( task => {
+                    if ( task._id === taskId ) {
+                        task.subTasks.push( subtask );
+                    }
+
+                    return task;
+                } )
+            };
+        } );
+
+        setWorks( cacheWorks );
+    };
 
     return (
-        <WorkContext.Provider value={ { works, setWork, insertTaskToWork } }>
+        <WorkContext.Provider value={ { works, setWork, insertTaskToWork, insertSubTaskToTask } }>
             { children }
         </WorkContext.Provider>
     );

@@ -53,7 +53,20 @@ export const makeServer = () => {
                     subTasks: []
                 };
 
-                return schema.create( 'task', task as any );
+                return schema.create( 'task', task as any ).attrs;
+            } );
+
+            /* sub_tasks */
+            this.post( '/sub-tasks', ( schema, request ) => {
+                const body: { subTaskDescription: string } = request.requestBody as any;
+
+                const subTask: SubTask = {
+                    _id: generateHash(),
+                    description: body.subTaskDescription,
+                    finished: false
+                };
+
+                return schema.create( 'subTask', subTask as any ).attrs;
             } );
         },
     } );

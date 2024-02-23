@@ -3,6 +3,7 @@ import { useWork } from '@/app/contexts/work.context';
 import { useEffect } from 'react';
 import { serverApi } from '@/infra/api/server.api.ts';
 import { Work } from '@/interfaces/task.interface.ts';
+import { ListTasks } from '@/modules/taskManager/components/list-task.component.tsx';
 
 export function ListTasksPage() {
     const { works, setWork } = useWork();
@@ -26,7 +27,7 @@ export function ListTasksPage() {
             <main>
                 <ul>
                     {
-                        works.map( work => {
+                        works.length && works.map( work => {
                             return (
                                 /* List works */
                                 <li key={ work._id } id={ work._id } className="p-4 flex flex-col gap-3">
@@ -36,7 +37,7 @@ export function ListTasksPage() {
                                         </span>
                                         <CUTask parentWork={ work }></CUTask>
                                     </div>
-                                    {/*<ListTasks work={ work }></ListTasks>*/ }
+                                    { work.tasks && <ListTasks work={ work }></ListTasks> }
                                 </li>
                             );
                         } )
