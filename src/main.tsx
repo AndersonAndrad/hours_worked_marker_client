@@ -1,14 +1,15 @@
 import './globals.css';
 
-import { App } from './App.tsx';
-import ReactDOM from 'react-dom/client';
-import { WorkContextProvider } from './app/contexts/work.context.tsx';
 import { makeServer } from '@/infra/miragejs/miragejs.config.ts';
+import ReactDOM from 'react-dom/client';
+import { RouterProvider } from 'react-router-dom';
+import { WorkContextProvider } from './app/contexts/work.context.tsx';
+import { router } from './router.tsx';
 
 makeServer();
 
-ReactDOM.createRoot( document.getElementById( 'root' )! ).render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
     <WorkContextProvider>
-        <App/>
+        <RouterProvider router={router} />
     </WorkContextProvider>
 );
