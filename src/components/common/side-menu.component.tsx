@@ -20,7 +20,7 @@ export function SideMenu() {
     const items: MenuItem[] = [
       { label: 'Profile', path: '', disabled: true, icon: <FontItalicIcon /> },
       { label: 'Dashboard', path: '/dashboard', disabled: true, icon: <FontItalicIcon /> },
-      { label: 'Work', path: '', disabled: true, icon: <FontItalicIcon /> },
+      { label: 'Projects', path: '/projects', disabled: false, icon: <FontItalicIcon /> },
       { label: 'Tasks', path: '/tasks', disabled: false, icon: <FontItalicIcon /> },
       { label: 'Financy', path: '', disabled: true, icon: <FontItalicIcon /> },
     ]

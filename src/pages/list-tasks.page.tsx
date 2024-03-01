@@ -1,4 +1,4 @@
-import { useWork } from '@/app/contexts/work.context';
+import { useWork } from '@/contexts/work.context';
 import { serverApi } from '@/infra/api/server.api.ts';
 import { Work } from '@/interfaces/task.interface.ts';
 import { CUTask } from '@/modules/taskManager/components/CU-task.component.tsx';

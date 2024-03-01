@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { Navbar } from "./components/common/navbar.component";
 import { SideMenu } from "./components/common/side-menu.component";
+import { Toaster } from "./components/ui/sonner";
 
 export function App() {
   return (
@@ -10,6 +11,7 @@ export function App() {
         <SideMenu />
         <div className='w-full p-4'>
           <div className=' border-solid border-y border-x border-opacity-25 border-white p-4 mt-9 rounded-sm'>
+            <Toaster />
             <Outlet />
           </div>
         </div>

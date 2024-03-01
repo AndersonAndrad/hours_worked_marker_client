@@ -1,73 +1,88 @@
-import { createServer, Model } from 'miragejs';
-import { Day, SubTask, Task, Work } from '@/interfaces/task.interface.ts';
-import { generateHash } from '@/app/utils/base64.utils.ts';
-import { faker } from '@faker-js/faker';
+import { Day, SubTask, Task, Work } from "@/interfaces/task.interface.ts";
+import { Model, createServer } from "miragejs";
 
+import { Project } from "@/interfaces/project.interface";
+import { generateHash } from "@/utils/base64.utils";
 
 export const makeServer = () => {
-    return createServer( {
-        models: {
-            work: Model.extend<Partial<Work>>( {} ),
-            day: Model.extend<Partial<Day>>( {} ),
-            task: Model.extend<Partial<Task>>( {} ),
-            subTask: Model.extend<Partial<SubTask>>( {} ),
-        },
+  return createServer({
+    models: {
+      work: Model.extend<Partial<Work>>({}),
+      day: Model.extend<Partial<Day>>({}),
+      task: Model.extend<Partial<Task>>({}),
+      subTask: Model.extend<Partial<SubTask>>({}),
+      project: Model.extend<Partial<Project>>({}),
+    },
 
-        seeds( server ) {
-            Array.from( { length: 2 } ).forEach( () => {
-                server.create( 'work', {
-                    _id: generateHash(),
-                    name: faker.person.jobArea(),
-                    enable: true,
-                    tasks: []
-                } as any );
-            } );
-        },
+    seeds(server) {},
 
-        routes() {
-            this.namespace = 'api';
+    routes() {
+      this.namespace = "api";
 
-            /* work */
-            this.get( '/works', ( schema ) => {
-                const users = schema.all( 'work' ).models;
-                return {
-                    items: users
-                };
-            } );
+      /* projects */
+      this.post("/projects", (schema, request) => {
+        const { name, hourPrice } = request.requestBody as any;
 
-            this.post( '/works', ( schema, request ) => {
-                return schema.create( 'work', JSON.parse( request.requestBody ) );
-            } );
+        const project: Project = {
+          _id: generateHash(),
+          hourPrice,
+          name,
+          enable: true,
+          tasks: [],
+        };
 
-            /* tasks */
-            this.post( '/tasks', ( schema, request ) => {
-                const body: { taskName: string } = request.requestBody as any;
+        return schema.create("project", project as any).attrs;
+      });
 
-                const task: Task = {
-                    _id: generateHash(),
-                    description: '',
-                    finished: false,
-                    name: body.taskName,
-                    paused: false,
-                    start: new Date(),
-                    subTasks: []
-                };
+      this.get("/projects", (schema) => {
+        const projects = schema.all("project").models;
 
-                return schema.create( 'task', task as any ).attrs;
-            } );
+        return {
+          items: projects ?? [],
+        };
+      });
 
-            /* sub_tasks */
-            this.post( '/sub-tasks', ( schema, request ) => {
-                const body: { subTaskDescription: string } = request.requestBody as any;
+      /* work */
+      this.get("/works", (schema) => {
+        const users = schema.all("work").models;
+        return {
+          items: users,
+        };
+      });
 
-                const subTask: SubTask = {
-                    _id: generateHash(),
-                    description: body.subTaskDescription,
-                    finished: false
-                };
+      this.post("/works", (schema, request) => {
+        return schema.create("work", JSON.parse(request.requestBody));
+      });
 
-                return schema.create( 'subTask', subTask as any ).attrs;
-            } );
-        },
-    } );
+      /* tasks */
+      this.post("/tasks", (schema, request) => {
+        const body: { taskName: string } = request.requestBody as any;
+
+        const task: Task = {
+          _id: generateHash(),
+          description: "",
+          finished: false,
+          name: body.taskName,
+          paused: false,
+          start: new Date(),
+          subTasks: [],
+        };
+
+        return schema.create("task", task as any).attrs;
+      });
+
+      /* sub_tasks */
+      this.post("/sub-tasks", (schema, request) => {
+        const body: { subTaskDescription: string } = request.requestBody as any;
+
+        const subTask: SubTask = {
+          _id: generateHash(),
+          description: body.subTaskDescription,
+          finished: false,
+        };
+
+        return schema.create("subTask", subTask as any).attrs;
+      });
+    },
+  });
 };

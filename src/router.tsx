@@ -4,6 +4,7 @@ import {
 import { App } from "./App";
 import { ListTasksPage } from "./pages/list-tasks.page";
 import { NotFound } from "./pages/not-found.page";
+import { ProjectPage } from "./pages/project.page";
 
 export const router = createBrowserRouter([
   {
@@ -11,7 +12,8 @@ export const router = createBrowserRouter([
     element: <App />,
     errorElement: <NotFound />,
     children: [
-      { path: '/tasks', element: <ListTasksPage /> }
+      { path: '/tasks', element: <ListTasksPage /> },
+      { path: '/projects', element: <ProjectPage /> },
     ]
   },
 
