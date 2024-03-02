@@ -2,9 +2,10 @@ import {
   createBrowserRouter
 } from "react-router-dom";
 import { App } from "./App";
-import { ListTasksPage } from "./pages/list-tasks.page";
 import { NotFound } from "./pages/not-found.page";
-import { ProjectPage } from "./pages/project.page";
+import { ProjectsPage } from "./pages/projects.page";
+import { TasksProjectPage } from "./pages/tasks-project.page";
+import { TasksPage } from "./pages/tasks.page";
 
 export const router = createBrowserRouter([
   {
@@ -12,8 +13,12 @@ export const router = createBrowserRouter([
     element: <App />,
     errorElement: <NotFound />,
     children: [
-      { path: '/tasks', element: <ListTasksPage /> },
-      { path: '/projects', element: <ProjectPage /> },
+      { path: '/tasks', element: <TasksPage /> },
+      { path: '/projects', element: <ProjectsPage />, },
+      /**
+       * @TODO check to transform this route in children by tasks
+       */
+      { path: '/project', element: <TasksProjectPage /> },
     ]
   },
 

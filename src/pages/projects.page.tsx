@@ -1,13 +1,15 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useEffect, useState } from 'react';
 
+import { Container } from '@/components/common/container.component';
+import { FooterPagination } from '@/components/common/footer-pagination.component';
 import { CreateOrUpdateProject } from '@/components/project/createOrUpdate.component';
 import { serverApi } from '@/infra/api/server.api';
 import { Project } from '@/interfaces/project.interface';
 import { maskMoney } from '@/utils/currency.utils';
 import { toast } from 'sonner';
 
-export function ProjectPage() {
+export function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
 
   useEffect(() => { loadProjects() }, []);
@@ -26,12 +28,12 @@ export function ProjectPage() {
   const columns: string[] = ['Name', 'Price per hour', 'Number of tasks']
 
   return (
-    <div className='flex flex-col gap-5'>
+    <Container>
       <header className='flex flex-row items-center justify-between'>
         <span className="text-3xl">Projects</span>
         <CreateOrUpdateProject subonLoadProjectsmitted={loadProjects} />
       </header>
-      <main>
+      <main className='flex-grow'>
         <Table>
           <TableHeader>
             <TableRow>
@@ -51,6 +53,7 @@ export function ProjectPage() {
           </TableBody>
         </Table>
       </main>
-    </div>
+      <FooterPagination />
+    </Container>
   )
 }

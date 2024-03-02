@@ -1,25 +1,10 @@
-export interface Work {
-  _id: string;
-  name: string;
-  enable: boolean;
-  tasks: Task[];
-  /**
-   * save always in cents
-   */
-  hourPrice: number;
-}
-
-export interface Day {
-  _id: string;
-  day: Date;
-  tasks?: Task[];
-  resume: string;
-}
+import { Project } from "./project.interface";
 
 export interface Task {
   _id: string;
   name: string;
   description: string;
+  project: Omit<Project, "enable" | "tasks">;
   start: Date;
   finish?: Date;
   finished: boolean;

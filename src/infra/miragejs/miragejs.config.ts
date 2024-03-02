@@ -1,20 +1,30 @@
-import { Day, SubTask, Task, Work } from "@/interfaces/task.interface.ts";
+import { SubTask, Task } from "@/interfaces/task.interface.ts";
 import { Model, createServer } from "miragejs";
 
 import { Project } from "@/interfaces/project.interface";
 import { generateHash } from "@/utils/base64.utils";
+import { faker } from "@faker-js/faker";
 
 export const makeServer = () => {
   return createServer({
     models: {
-      work: Model.extend<Partial<Work>>({}),
-      day: Model.extend<Partial<Day>>({}),
       task: Model.extend<Partial<Task>>({}),
       subTask: Model.extend<Partial<SubTask>>({}),
       project: Model.extend<Partial<Project>>({}),
     },
 
-    seeds(server) {},
+    seeds(server) {
+      Array.from({ length: 5 }).forEach(() => {
+        faker;
+        server.create("project", {
+          _id: generateHash(),
+          name: faker.person.jobArea(),
+          enable: true,
+          tasks: [],
+          hourPrice: faker.finance.amount(),
+        } as any);
+      });
+    },
 
     routes() {
       this.namespace = "api";
@@ -42,25 +52,17 @@ export const makeServer = () => {
         };
       });
 
-      /* work */
-      this.get("/works", (schema) => {
-        const users = schema.all("work").models;
-        return {
-          items: users,
-        };
-      });
-
-      this.post("/works", (schema, request) => {
-        return schema.create("work", JSON.parse(request.requestBody));
-      });
-
       /* tasks */
       this.post("/tasks", (schema, request) => {
-        const body: { taskName: string } = request.requestBody as any;
+        const body: {
+          taskName: string;
+          project: Omit<Project, "enable" | "tasks">;
+        } = request.requestBody as any;
 
         const task: Task = {
           _id: generateHash(),
           description: "",
+          project: body.project,
           finished: false,
           name: body.taskName,
           paused: false,
@@ -69,6 +71,14 @@ export const makeServer = () => {
         };
 
         return schema.create("task", task as any).attrs;
+      });
+
+      this.get("/tasks/projectId", (schema) => {
+        const tasks = schema.all("task").models as any;
+
+        return {
+          items: tasks ?? [],
+        };
       });
 
       /* sub_tasks */
