@@ -10,6 +10,8 @@ makeServer();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <WorkContextProvider>
-        <RouterProvider router={router} />
+        <div className='bg-primary text-white w-screen h-screen'>
+            <RouterProvider router={router} />
+        </div>
     </WorkContextProvider>
 );

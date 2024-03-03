@@ -4,7 +4,7 @@ interface ContainerProps {
 
 export function Container({ children }: ContainerProps) {
   return (
-    <div className='flex flex-col gap-5 flex-grow h-full'>
+    <div className='flex flex-col gap-5 h-full'>
       {children}
     </div>
   )

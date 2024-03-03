@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 
 import { Container } from '@/components/common/container.component';
 import { FooterPagination } from '@/components/common/footer-pagination.component';
+import { Main } from '@/components/common/main.component';
 import { CreateOrUpdateProject } from '@/components/project/createOrUpdate.component';
 import { serverApi } from '@/infra/api/server.api';
 import { Project } from '@/interfaces/project.interface';
@@ -33,7 +34,7 @@ export function ProjectsPage() {
         <span className="text-3xl">Projects</span>
         <CreateOrUpdateProject subonLoadProjectsmitted={loadProjects} />
       </header>
-      <main className='flex-grow'>
+      <Main>
         <Table>
           <TableHeader>
             <TableRow>
@@ -52,8 +53,9 @@ export function ProjectsPage() {
             ))}
           </TableBody>
         </Table>
-      </main>
+      </Main>
       <FooterPagination />
     </Container>
   )
 }
+

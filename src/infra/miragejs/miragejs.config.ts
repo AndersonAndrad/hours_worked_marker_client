@@ -14,7 +14,7 @@ export const makeServer = () => {
     },
 
     seeds(server) {
-      Array.from({ length: 5 }).forEach(() => {
+      Array.from({ length: 32 }).forEach(() => {
         faker;
         server.create("project", {
           _id: generateHash(),
