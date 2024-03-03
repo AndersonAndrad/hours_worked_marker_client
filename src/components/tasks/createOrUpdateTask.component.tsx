@@ -11,13 +11,13 @@ import {
 import { Button } from '@/components/ui/button.tsx';
 import { Input } from '@/components/ui/input.tsx';
 import { serverApi } from '@/infra/api/server.api.ts';
-import { Work } from '@/interfaces/task.interface.ts';
+import { Project } from '@/interfaces/project.interface';
 import { PlusIcon } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
 interface CreateOrUpdateProps {
-  project: Work;
+  project: Project;
   whenCreated: () => void;
 }
 

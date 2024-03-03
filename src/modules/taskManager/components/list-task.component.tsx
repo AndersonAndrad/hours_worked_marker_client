@@ -5,27 +5,28 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu.tsx';
-import { Task, Work } from '@/interfaces/task.interface';
 import { CheckCheck, Pause, Play, Trash2 } from 'lucide-react';
 
 import { Alert } from '@/components/common/alert.component.tsx';
 import { SubTasksComponent } from '@/components/tasks/sub-tasks.component';
 import { Button } from '@/components/ui/button.tsx';
+import { Project } from '@/interfaces/project.interface';
+import { Task } from '@/interfaces/task.interface';
 import { formatDate } from '@/utils/date-converter.utils';
 import { useState } from 'react';
 
 interface ListTasksProps {
-    work: Work;
+    project: Project;
 }
 
-export function ListTasks({ work }: ListTasksProps) {
+export function ListTasks({ project }: ListTasksProps) {
     const [task, setTask] = useState<Task | undefined>(undefined);
 
     return (
         <>
             <div className="flex flex-row gap-1">
                 <ul className="p-4 flex flex-col gap-2 w-full">
-                    {work.tasks && work.tasks.map(task => {
+                    {project.tasks && project.tasks.map(task => {
                         return (
                             <li key={task._id} id={task._id}>
                                 <div className="flex flex-col border-2 p-4 rounded-lg">
