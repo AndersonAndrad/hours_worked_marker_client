@@ -15,14 +15,30 @@ export const makeServer = () => {
 
     seeds(server) {
       Array.from({ length: 32 }).forEach(() => {
-        faker;
-        server.create("project", {
+        const project: Project = {
           _id: generateHash(),
           name: faker.person.jobArea(),
           enable: true,
           tasks: [],
-          hourPrice: faker.finance.amount(),
-        } as any);
+          hourPrice: faker.number.float(),
+        };
+
+        server.create("project", project as any);
+
+        Array.from({ length: 10 }).map(() => {
+          const task: Task = {
+            _id: generateHash(),
+            name: faker.person.jobTitle(),
+            description: faker.definitions.company.adjective[0],
+            project: project,
+            start: faker.date.anytime(),
+            finished: faker.datatype.boolean(),
+            paused: faker.datatype.boolean(),
+            subTasks: [],
+          };
+
+          server.create("task", task as any);
+        });
       });
     },
 

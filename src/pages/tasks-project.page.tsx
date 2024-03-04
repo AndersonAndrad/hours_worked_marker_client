@@ -26,7 +26,6 @@ export function TasksProjectPage() {
     serverApi.get(`tasks/projectId`)
       .then(({ data }) => {
         const { items } = JSON.parse(data) as { items: Task[] }
-
         /**
          * @TODO remove this filter when return data because return filtered
          */
