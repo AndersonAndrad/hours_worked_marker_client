@@ -98,16 +98,25 @@ export const makeServer = () => {
       });
 
       /* sub_tasks */
-      this.post("/sub-tasks", (schema, request) => {
-        const body: { subTaskDescription: string } = request.requestBody as any;
+      this.post("/task/commentary", (schema, request) => {
+        const body: { commentary: string; task: Task } =
+          request.requestBody as any;
 
         const subTask: SubTask = {
           _id: generateHash(),
-          description: body.subTaskDescription,
-          finished: false,
+          description: body.commentary,
+          task: body.task,
         };
 
         return schema.create("subTask", subTask as any).attrs;
+      });
+
+      this.get("/task/comentaries", (schema) => {
+        const comentaries = schema.all("subTask").models as any;
+
+        return {
+          items: comentaries ?? [],
+        };
       });
     },
   });

@@ -15,5 +15,5 @@ export interface Task {
 export interface SubTask {
   _id: string;
   description: string;
-  finished: boolean;
+  task: Task;
 }
