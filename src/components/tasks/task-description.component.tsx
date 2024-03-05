@@ -15,7 +15,7 @@ export function TaskDescription({ task }: TaskDescriptionProps) {
   const [commentary, setCommentary] = useState<string>('');
   const [commentaries, setCommentaries] = useState<SubTask[]>([]);
 
-  useEffect(() => { loadComentaries() }, [])
+  useEffect(() => { loadComentaries() }, [task])
 
   const registerCommentary = (): void => {
     if (!commentary.length) return;
