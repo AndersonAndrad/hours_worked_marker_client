@@ -6,6 +6,7 @@ import { Header } from "@/components/common/header.component";
 import { Main } from "@/components/common/main.component";
 import { CreateOrUpdateTask } from "@/components/tasks/createOrUpdateTask.component";
 import { TaskDescription } from "@/components/tasks/task-description.component";
+import { TaskMenu } from "@/components/tasks/task-menu.component";
 import { serverApi } from "@/infra/api/server.api";
 import { Task } from "@/interfaces/task.interface";
 import { formatDate } from "@/utils/date-converter.utils";
@@ -40,7 +41,7 @@ export function TasksProjectPage() {
     setTask(task);
   }
 
-  const columns: string[] = ['Name', 'Description', 'Date']
+  const columns: string[] = ['Name', 'Description', 'Date', '']
 
   return (
     <div className="flex flex-row h-full gap-10">
@@ -67,6 +68,9 @@ export function TasksProjectPage() {
                     >{task.name}</TableCell>
                     <TableCell>{task.description}</TableCell>
                     <TableCell>{formatDate(task.start)} - {task?.finished && formatDate(task.finish)}</TableCell>
+                    <TableCell>
+                      <TaskMenu task={task} />
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
