@@ -47,7 +47,7 @@ export function TasksProjectPage() {
     <div className="flex flex-row h-full gap-10">
       <div className="w-3/4">
         <Container>
-          <Header title={project.name}>
+          <Header title={project.name} pathNavigation="/tasks">
             <CreateOrUpdateTask project={project} whenCreated={loadTasks} />
           </Header>
           <Main>
