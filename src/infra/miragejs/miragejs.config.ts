@@ -118,6 +118,8 @@ export const makeServer = () => {
           items: comentaries ?? [],
         };
       });
+
+      this.delete("/task/commentary/:commentaryId", (schema, request) => {});
     },
   });
 };

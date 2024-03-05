@@ -38,6 +38,14 @@ export function TaskDescription({ task }: TaskDescriptionProps) {
     })
   }
 
+  const deleteCommentary = (commentaryId: string) => {
+    serverApi.delete(`/task/commentary/${commentaryId}`).then(() => {
+      const filtered = commentaries.filter(commentary => commentary._id !== commentaryId);
+
+      setCommentaries(filtered);
+    })
+  }
+
   return (
     <CardComponent>
       <header>
@@ -58,13 +66,15 @@ export function TaskDescription({ task }: TaskDescriptionProps) {
         </section>
       </main>
       <ul className="flex flex-col gap-2">
-        {commentaries.map(comentary => {
+        {commentaries.map(commentary => {
           return (
-            <li key={comentary._id}>
+            <li key={commentary._id}>
               <CardComponent>
                 <div className="flex flex-row items-center justify-between">
-                  {comentary.description}
-                  <Button>
+                  {commentary.description}
+                  <Button
+                    onClick={() => deleteCommentary(commentary._id)}
+                  >
                     <Trash2Icon />
                   </Button>
                 </div>
