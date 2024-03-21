@@ -8,5 +8,5 @@ export interface Project {
   /**
    * save always in cents
    */
-  hourPrice: number;
+  hoursPrice: number;
 }

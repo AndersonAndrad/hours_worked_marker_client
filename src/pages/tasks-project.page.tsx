@@ -2,16 +2,16 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useEffect, useState } from "react";
 
 import { Container } from "@/components/common/container.component";
+import { CreateOrUpdateTask } from "@/components/tasks/createOrUpdateTask.component";
 import { Header } from "@/components/common/header.component";
 import { Main } from "@/components/common/main.component";
-import { CreateOrUpdateTask } from "@/components/tasks/createOrUpdateTask.component";
+import { Task } from "@/interfaces/task.interface";
 import { TaskDescription } from "@/components/tasks/task-description.component";
 import { TaskMenu } from "@/components/tasks/task-menu.component";
-import { serverApi } from "@/infra/api/server.api";
-import { Task } from "@/interfaces/task.interface";
 import { formatDate } from "@/utils/date-converter.utils";
-import { useLocation } from "react-router-dom";
+import serverApi from "@/infra/api/server.api";
 import { toast } from "sonner";
+import { useLocation } from "react-router-dom";
 
 export function TasksProjectPage() {
   const { state: { project } } = useLocation();

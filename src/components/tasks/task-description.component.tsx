@@ -1,11 +1,11 @@
 import { SubTask, Task } from "@/interfaces/task.interface";
 import { useEffect, useState } from "react";
 
-import { serverApi } from "@/infra/api/server.api";
-import { Trash2Icon } from "lucide-react";
-import { CardComponent } from "../common/card.component";
 import { Button } from "../ui/button";
+import { CardComponent } from "../common/card.component";
 import { Textarea } from "../ui/textarea";
+import { Trash2Icon } from "lucide-react";
+import serverApi from "@/infra/api/server.api";
 
 interface TaskDescriptionProps {
   task?: Task

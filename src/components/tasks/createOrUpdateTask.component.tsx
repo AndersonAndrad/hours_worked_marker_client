@@ -10,11 +10,11 @@ import {
 
 import { Button } from '@/components/ui/button.tsx';
 import { Input } from '@/components/ui/input.tsx';
-import { serverApi } from '@/infra/api/server.api.ts';
-import { Project } from '@/interfaces/project.interface';
 import { PlusIcon } from 'lucide-react';
-import { useState } from 'react';
+import { Project } from '@/interfaces/project.interface';
+import serverApi from "@/infra/api/server.api";
 import { toast } from 'sonner';
+import { useState } from 'react';
 
 interface CreateOrUpdateProps {
   project: Project;

@@ -1,12 +1,12 @@
-import { BookmarkCheck, MoreVertical, Trash2 } from "lucide-react";
 import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "../ui/alert-dialog";
+import { BookmarkCheck, MoreVertical, Trash2 } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
-import { serverApi } from "@/infra/api/server.api";
-import { Task } from "@/interfaces/task.interface";
-import { useState } from "react";
-import { toast } from "sonner";
 import { Button } from "../ui/button";
+import { Task } from "@/interfaces/task.interface";
+import serverApi from "@/infra/api/server.api";
+import { toast } from "sonner";
+import { useState } from "react";
 
 interface TaskMenuProps {
   task: Task

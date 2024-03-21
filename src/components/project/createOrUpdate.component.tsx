@@ -2,10 +2,10 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { serverApi } from "@/infra/api/server.api";
 import { PlusIcon } from "lucide-react";
-import { useState } from "react";
+import serverApi from "@/infra/api/server.api";
 import { toast } from "sonner";
+import { useState } from "react";
 
 interface CreateOrUpdateProps {
   subonLoadProjectsmitted: () => void;
@@ -13,16 +13,18 @@ interface CreateOrUpdateProps {
 
 export function CreateOrUpdateProject({ subonLoadProjectsmitted }: CreateOrUpdateProps) {
   const [name, setName] = useState<string>('')
-  const [hourPrice, setHourPrice] = useState<number>(0)
+  const [hoursPrice, setHoursPrice] = useState<number>(0)
 
-  const createOrUpdateProject = () => {
-    serverApi.post('/projects', { name, hourPrice })
-      .then(() => {
-        toast('Project created with success');
-        subonLoadProjectsmitted();
-      }).catch(error => {
-        toast('Not is possible save Project', { description: error.message });
-      })
+  const createOrUpdateProject = async () => {
+    try {
+      await serverApi.post('project', { name, hoursPrice });
+      toast('Project created with success');
+      subonLoadProjectsmitted();
+      setName('');
+    } catch (error) {
+      console.error('Error:', error);
+      // toast('Not possible to save Project', { description: error.message });
+    }
   }
 
   return (
@@ -50,8 +52,8 @@ export function CreateOrUpdateProject({ subonLoadProjectsmitted }: CreateOrUpdat
             <Input
               id="project-price-hour"
               type="number"
-              onChange={(event) => setHourPrice(Number(event.target.value))}
-              value={hourPrice}
+              onChange={(event) => setHoursPrice(Number(event.target.value))}
+              value={hoursPrice}
             />
           </section>
         </div>

@@ -2,28 +2,22 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { useEffect, useState } from 'react';
 
 import { Container } from '@/components/common/container.component';
+import { CreateOrUpdateProject } from '@/components/project/createOrUpdate.component';
 import { FooterPagination } from '@/components/common/footer-pagination.component';
 import { Main } from '@/components/common/main.component';
-import { CreateOrUpdateProject } from '@/components/project/createOrUpdate.component';
-import { serverApi } from '@/infra/api/server.api';
 import { Project } from '@/interfaces/project.interface';
 import { maskMoney } from '@/utils/currency.utils';
-import { toast } from 'sonner';
+import serverApi from "@/infra/api/server.api";
 
 export function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
 
   useEffect(() => { loadProjects() }, []);
 
-  const loadProjects = () => {
-    serverApi.get('projects')
-      .then(({ data }) => {
-        const { items } = JSON.parse(data) as { items: Project[] }
-        setProjects(items);
-      })
-      .catch((error) => {
-        toast('Error to load projects', { description: error.message })
-      })
+  const loadProjects = async () => {
+    const { data } = await serverApi.get('project/find-all')
+    const { items } = data as { items: Project[] }
+    setProjects(items)
   }
 
   const columns: string[] = ['Name', 'Price per hour', 'Number of tasks']
@@ -47,8 +41,8 @@ export function ProjectsPage() {
             {projects && projects.map(project => (
               <TableRow key={project._id}>
                 <TableCell>{project.name}</TableCell>
-                <TableCell>{maskMoney(project.hourPrice)}</TableCell>
-                <TableCell>{project.tasks.length}</TableCell>
+                <TableCell>{maskMoney(project.hoursPrice)}</TableCell>
+                <TableCell>{project.tasks && project.tasks.length}</TableCell>
               </TableRow>
             ))}
           </TableBody>

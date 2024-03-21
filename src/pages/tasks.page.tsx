@@ -4,8 +4,8 @@ import { CardComponent } from '@/components/common/card.component';
 import { Container } from '@/components/common/container.component';
 import { Header } from '@/components/common/header.component';
 import { Main } from '@/components/common/main.component';
-import { serverApi } from '@/infra/api/server.api.ts';
 import { Project } from '@/interfaces/project.interface';
+import serverApi from "@/infra/api/server.api";
 import { useNavigate } from 'react-router-dom';
 
 export function TasksPage() {

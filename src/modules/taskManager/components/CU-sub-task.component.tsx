@@ -11,9 +11,9 @@ import { SubTask, Task } from '@/interfaces/task.interface.ts';
 
 import { Button } from '@/components/ui/button.tsx';
 import { Input } from '@/components/ui/input.tsx';
-import { useWork } from '@/contexts/work.context';
-import { serverApi } from '@/infra/api/server.api.ts';
+import serverApi from "@/infra/api/server.api";
 import { useState } from 'react';
+import { useWork } from '@/contexts/work.context';
 
 interface CUSubTaskComponentProps {
     task: Task;
