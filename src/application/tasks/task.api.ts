@@ -1,10 +1,10 @@
 import { Filter, Task } from "@/interfaces/task.interface";
+import { createTasksValidate, updateTasksValidate } from "./task.validators";
 
 import { PaginatedResponse } from "@/interfaces/paginate.interface";
 import { buildParamsFromObject } from "@/utils/http.utils";
 import { toast } from "sonner";
 import serverApi from "../../infra/api/server.api";
-import { createTasksValidate } from "./task.validators";
 
 export class TaskApi {
   private TASK_URL: string = "tasks";
@@ -55,6 +55,26 @@ export class TaskApi {
         })
         .catch((error) => {
           toast("Error to delete task", { description: error.message });
+          reject(error);
+        });
+    });
+  }
+
+  update(
+    taskId: Task["_id"],
+    task: Partial<Omit<Task, "start">>
+  ): Promise<void> {
+    updateTasksValidate(task);
+
+    return new Promise((resolve, reject) => {
+      serverApi
+        .patch(`${this.TASK_URL}/${taskId}`, task)
+        .then(() => {
+          toast("Task updated with success");
+          resolve();
+        })
+        .catch((error) => {
+          toast("Error to update task", { description: error.message });
           reject(error);
         });
     });

@@ -38,15 +38,17 @@ export function TaskMenu({ task, refreshParent }: TaskMenuProps) {
   }
 
   const deleteTask = async (): Promise<void> => {
-    await taskApi.delete(task._id).then(() => refreshParent())
+    await taskApi.delete(task._id).then(() => {
+      refreshParent()
+      setOpenDeleteDialog(false);
+    })
   }
 
-  const finishTask = (): void => {
-    serverApi.post(`/task/${task._id}/pause`).then(() => {
-      toast('Task completed successfully.')
-    }).catch((error) => {
-      toast('Unable to finish the task.', { description: error.mesage })
-    })
+  const finishTask = async (): Promise<void> => {
+    await taskApi.update(task._id, { finished: true, finish: new Date() }).then(() => {
+      refreshParent()
+      setOpenFinishDialog(false);
+    });
   }
 
   return (
@@ -58,10 +60,10 @@ export function TaskMenu({ task, refreshParent }: TaskMenuProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem onClick={() => pauseTask()} disabled={task.paused && !task.finished}>
+          <DropdownMenuItem onClick={() => pauseTask()} disabled={task.paused || task.finished}>
             Pause
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => playTask()} disabled={!task.paused && !task.finished}>
+          <DropdownMenuItem onClick={() => playTask()} disabled={!task.paused || task.finished}>
             Play
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpenFinishDialog(true)} disabled={task.finished}>
