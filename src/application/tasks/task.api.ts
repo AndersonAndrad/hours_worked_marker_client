@@ -1,4 +1,4 @@
-import { Filter, Task } from "@/interfaces/task.interface";
+import { Filter, Task, TaskNotation } from "@/interfaces/task.interface";
 import { createTasksValidate, updateTasksValidate } from "./task.validators";
 
 import { PaginatedResponse } from "@/interfaces/paginate.interface";
@@ -75,6 +75,26 @@ export class TaskApi {
         })
         .catch((error) => {
           toast("Error to update task", { description: error.message });
+          reject(error);
+        });
+    });
+  }
+
+  addNotation(
+    taskId: Task["_id"],
+    notation: Pick<TaskNotation, "notation">
+  ): Promise<void> {
+    return new Promise((resolve, reject) => {
+      serverApi
+        .post(`${this.TASK_URL}/${taskId}/add-notation`, notation)
+        .then(() => {
+          toast("Notation added to tasks with success");
+          resolve();
+        })
+        .catch((error) => {
+          toast("Error to add notation in task", {
+            description: error.message,
+          });
           reject(error);
         });
     });

@@ -1,48 +1,39 @@
-import { SubTask, Task } from "@/interfaces/task.interface";
+import { Task, TaskNotation } from "@/interfaces/task.interface";
 import { useEffect, useState } from "react";
 
-import { Button } from "../ui/button";
-import { CardComponent } from "../common/card.component";
-import { Textarea } from "../ui/textarea";
-import { Trash2Icon } from "lucide-react";
+import { TaskApi } from "@/application/tasks/task.api";
 import serverApi from "@/infra/api/server.api";
+import { Trash2Icon } from "lucide-react";
+import { CardComponent } from "../common/card.component";
+import { Button } from "../ui/button";
+import { Textarea } from "../ui/textarea";
 
 interface TaskDescriptionProps {
-  task?: Task
+  task: Task
 }
 
 export function TaskDescription({ task }: TaskDescriptionProps) {
-  const [commentary, setCommentary] = useState<string>('');
-  const [commentaries, setCommentaries] = useState<SubTask[]>([]);
+  const taskApi = new TaskApi();
+  const [notation, setNotation] = useState<string>('');
+  const [notations, setNotations] = useState<TaskNotation[]>([]);
 
-  useEffect(() => { loadComentaries() }, [task])
+  useEffect(() => { loadNotations() }, [task])
 
-  const registerCommentary = (): void => {
-    if (!commentary.length) return;
+  const registerCommentary = async (): Promise<void> => {
+    if (!notation.length) return;
 
-    serverApi.post('/task/commentary', { commentary: commentary.trim(), task }).then(() => {
-      loadComentaries();
-      setCommentary('');
-    })
+    await taskApi.addNotation(task._id, { notation }).then(() => loadNotations())
   }
 
-  const loadComentaries = () => {
-    serverApi.get('/task/comentaries').then(({ data }) => {
-      let { items } = JSON.parse(data) as { items: SubTask[] };
+  const loadNotations = async (): Promise<void> => {
 
-      if (task && items.length) {
-        items = items.filter((item) => item.task._id === task._id);
-      }
-
-      setCommentaries(items);
-    })
   }
 
-  const deleteCommentary = (commentaryId: string) => {
+  const deleteCommentary = async (commentaryId: string): Promise<void> => {
     serverApi.delete(`/task/commentary/${commentaryId}`).then(() => {
-      const filtered = commentaries.filter(commentary => commentary._id !== commentaryId);
+      const filtered = notations.filter(commentary => commentary._id !== commentaryId);
 
-      setCommentaries(filtered);
+      setNotations(filtered);
     })
   }
 
@@ -53,9 +44,9 @@ export function TaskDescription({ task }: TaskDescriptionProps) {
       </header>
       <main className="flex flex-col">
         <Textarea
-          onChange={(event) => { setCommentary(event.target.value) }}
+          onChange={(event) => { setNotation(event.target.value) }}
           className="resize-none"
-          value={commentary}
+          value={notation}
         />
         <section className="flex flex-row justify-end">
           <Button
@@ -66,14 +57,14 @@ export function TaskDescription({ task }: TaskDescriptionProps) {
         </section>
       </main>
       <ul className="flex flex-col gap-2">
-        {commentaries.map(commentary => {
+        {notations.map(notation => {
           return (
-            <li key={commentary._id}>
+            <li key={notation._id}>
               <CardComponent>
                 <div className="flex flex-row items-center justify-between">
-                  {commentary.description}
+                  {notation.notation}
                   <Button
-                    onClick={() => deleteCommentary(commentary._id)}
+                    onClick={() => deleteCommentary(notation._id)}
                   >
                     <Trash2Icon />
                   </Button>

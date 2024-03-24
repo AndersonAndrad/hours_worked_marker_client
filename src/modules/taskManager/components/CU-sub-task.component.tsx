@@ -7,29 +7,25 @@ import {
     DialogHeader,
     DialogTrigger
 } from '@/components/ui/dialog.tsx';
-import { SubTask, Task } from '@/interfaces/task.interface.ts';
+import { Task } from '@/interfaces/task.interface.ts';
 
+import { TaskApi } from '@/application/tasks/task.api';
 import { Button } from '@/components/ui/button.tsx';
 import { Input } from '@/components/ui/input.tsx';
-import serverApi from "@/infra/api/server.api";
 import { useState } from 'react';
-import { useWork } from '@/contexts/work.context';
 
 interface CUSubTaskComponentProps {
     task: Task;
+    refreshParent: () => void;
 }
 
 
-export function CUSubTask({ task }: CUSubTaskComponentProps) {
-    const { insertSubTaskToTask } = useWork();
+export function CUSubTask({ task, refreshParent }: CUSubTaskComponentProps) {
+    const taskApi = new TaskApi();
     const [subTaskDescription, setSubTaskDescription] = useState<string>('');
 
-    const registerSubTask = (): void => {
-        serverApi.post('sub-tasks', { subTaskDescription }).then(({ data }) => {
-            const subTask: SubTask = JSON.parse(data);
-
-            insertSubTaskToTask(subTask, task._id);
-        });
+    const registerSubTask = async (): Promise<void> => {
+        await taskApi.addNotation(task._id, { notation: subTaskDescription }).then(() => refreshParent());
     };
 
     return (
