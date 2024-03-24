@@ -52,9 +52,10 @@ export function TasksProjectPage() {
                 {tasks && tasks.map(task => (
                   <TableRow key={task._id}>
                     <TableCell
-                      className="cursor-pointer"
+                      className={`cursor-pointer ${task.finished ? "line-through" : ''}`}
                       onClick={() => { selectTask(task) }}
-                    >{task.name}</TableCell>
+                    >{task.name}
+                    </TableCell>
                     <TableCell>{task.description}</TableCell>
                     <TableCell>{formatDate(task.start)} - {task?.finished && formatDate(task.finish)}</TableCell>
                     <TableCell>
