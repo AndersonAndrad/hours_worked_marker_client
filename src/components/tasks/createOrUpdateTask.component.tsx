@@ -8,13 +8,13 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog.tsx';
 
+import { TaskApi } from '@/application/tasks/task.api';
 import { Button } from '@/components/ui/button.tsx';
 import { Input } from '@/components/ui/input.tsx';
-import { PlusIcon } from 'lucide-react';
 import { Project } from '@/interfaces/project.interface';
-import serverApi from "@/infra/api/server.api";
-import { toast } from 'sonner';
+import { PlusIcon } from 'lucide-react';
 import { useState } from 'react';
+import { Textarea } from '../ui/textarea';
 
 interface CreateOrUpdateProps {
   project: Project;
@@ -22,16 +22,16 @@ interface CreateOrUpdateProps {
 }
 
 export function CreateOrUpdateTask({ project, whenCreated }: CreateOrUpdateProps) {
+  const taskApi = new TaskApi();
   const [taskName, setTaskName] = useState<string>('');
+  const [taskDescription, setTaskDescription] = useState<string>('');
 
-  const registerTask = () => {
-    serverApi.post(`tasks`, { taskName, project })
-      .then(() => {
-        whenCreated();
-        toast('Task created with success');
-      }).catch((error) => {
-        toast('Not is possible create a taks', { description: error.message });
-      })
+  const registerTask = async () => {
+    await taskApi.create({
+      name: taskName,
+      description: taskDescription,
+      project
+    }).then(() => whenCreated())
   };
 
   return (
@@ -45,15 +45,29 @@ export function CreateOrUpdateTask({ project, whenCreated }: CreateOrUpdateProps
         </DialogTrigger>
         <DialogContent>
           <DialogHeader className="font-bold">New Task</DialogHeader>
-          <DialogDescription>Create a task for <span
-            className="font-bold">{project.name}</span></DialogDescription>
-          <div>
+          <DialogDescription>
+            Create a task for
+            <span
+              className="font-bold">
+              {project.name}
+            </span>
+          </DialogDescription>
+          <div className='flex flex-col gap-2'>
             <div className="flex flex-col gap-1">
-              <label htmlFor="task-description">Description</label>
+              <label htmlFor="task-description">Name</label>
               <Input
                 id="task-description"
                 onChange={(event) => setTaskName(event.target.value)}
                 value={taskName}
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="task-description">Description</label>
+              <Textarea
+                id="task-description"
+                onChange={(event) => setTaskDescription(event.target.value)}
+                value={taskDescription}
+                className='resize-none'
               />
             </div>
           </div>

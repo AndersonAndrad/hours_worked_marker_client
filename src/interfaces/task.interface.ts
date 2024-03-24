@@ -17,3 +17,7 @@ export interface SubTask {
   description: string;
   task: Task;
 }
+
+export interface Filter {
+  projectIds?: Project["_id"][];
+}

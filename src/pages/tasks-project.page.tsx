@@ -1,40 +1,29 @@
+import { TaskApi } from "@/application/tasks/task.api";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useEffect, useState } from "react";
 
 import { Container } from "@/components/common/container.component";
-import { CreateOrUpdateTask } from "@/components/tasks/createOrUpdateTask.component";
 import { Header } from "@/components/common/header.component";
 import { Main } from "@/components/common/main.component";
-import { Task } from "@/interfaces/task.interface";
+import { CreateOrUpdateTask } from "@/components/tasks/createOrUpdateTask.component";
 import { TaskDescription } from "@/components/tasks/task-description.component";
 import { TaskMenu } from "@/components/tasks/task-menu.component";
+import { Task } from "@/interfaces/task.interface";
 import { formatDate } from "@/utils/date-converter.utils";
-import serverApi from "@/infra/api/server.api";
-import { toast } from "sonner";
 import { useLocation } from "react-router-dom";
 
 export function TasksProjectPage() {
+  const taskApi = new TaskApi()
   const { state: { project } } = useLocation();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [task, setTask] = useState<Task | undefined>(undefined);
 
   useEffect(() => { loadTasks() }, []);
 
-  const loadTasks = (): void => {
-    /**
-     * @TODO change this to receive dynamic project id
-     */
-    serverApi.get(`tasks/projectId`)
-      .then(({ data }) => {
-        const { items } = JSON.parse(data) as { items: Task[] }
-        /**
-         * @TODO remove this filter when return data because return filtered
-         */
-        setTasks(items.filter(task => task.project._id === project._id));
-      })
-      .catch((error) => {
-        toast('Error to load projects', { description: error.message })
-      })
+  const loadTasks = async (): Promise<void> => {
+    const { items } = await taskApi.findAll({ projectIds: [project._id] })
+
+    setTasks(items)
   }
 
   const selectTask = (task: Task): void => {
