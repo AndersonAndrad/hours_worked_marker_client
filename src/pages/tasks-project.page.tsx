@@ -34,7 +34,7 @@ export function TasksProjectPage() {
 
   return (
     <div className="flex flex-row h-full gap-10">
-      <div className="w-3/4">
+      <div className={task ? 'w-3/4' : 'w-full  '}>
         <Container>
           <Header title={project.name} pathNavigation="/tasks">
             <CreateOrUpdateTask project={project} whenCreated={loadTasks} />
@@ -68,9 +68,11 @@ export function TasksProjectPage() {
           </Main>
         </Container>
       </div>
-      <div className="w-2/5">
-        <TaskDescription task={task} />
-      </div>
+      {task &&
+        <div className="w-2/5">
+          {task && <TaskDescription task={task} />}
+        </div>
+      }
     </div>
   )
 }

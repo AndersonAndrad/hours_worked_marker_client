@@ -133,4 +133,21 @@ export class TaskApi {
         });
     });
   }
+
+  togglePauseStatus(taskId: Task["_id"]): Promise<void> {
+    return new Promise((resolve, reject) => {
+      serverApi
+        .patch(`${this.TASK_URL}/${taskId}/toggle-status`)
+        .then(() => {
+          toast("Status task changed with success");
+          resolve();
+        })
+        .catch((error) => {
+          toast("Error to change pause status notations", {
+            description: error.message,
+          });
+          reject(error);
+        });
+    });
+  }
 }

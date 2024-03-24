@@ -3,10 +3,8 @@ import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFoo
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
 import { TaskApi } from "@/application/tasks/task.api";
-import serverApi from "@/infra/api/server.api";
 import { Task } from "@/interfaces/task.interface";
 import { useState } from "react";
-import { toast } from "sonner";
 import { Button } from "../ui/button";
 
 interface TaskMenuProps {
@@ -21,19 +19,15 @@ export function TaskMenu({ task, refreshParent }: TaskMenuProps) {
 
   const [openFinishDialog, setOpenFinishDialog] = useState<boolean>(false);
 
-  const pauseTask = (): void => {
-    serverApi.post(`/task/${task._id}/pause`).then(() => {
-      toast('Task paused successfully.')
-    }).catch((error) => {
-      toast('Unable to pause the task.', { description: error.mesage })
+  const pauseTask = async (): Promise<void> => {
+    await taskApi.togglePauseStatus(task._id).then(() => {
+      refreshParent();
     })
   }
 
-  const playTask = (): void => {
-    serverApi.post(`/task/${task._id}/play`).then(() => {
-      toast('Task started successfully.')
-    }).catch((error) => {
-      toast('Unable to play the task.', { description: error.mesage })
+  const playTask = async (): Promise<void> => {
+    await taskApi.togglePauseStatus(task._id).then(() => {
+      refreshParent();
     })
   }
 
