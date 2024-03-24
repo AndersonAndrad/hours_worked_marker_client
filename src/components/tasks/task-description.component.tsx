@@ -22,11 +22,16 @@ export function TaskDescription({ task }: TaskDescriptionProps) {
   const registerCommentary = async (): Promise<void> => {
     if (!notation.length) return;
 
-    await taskApi.addNotation(task._id, { notation }).then(() => loadNotations())
+    await taskApi.addNotation(task._id, { notation }).then(() => {
+      loadNotations()
+      setNotation('');
+    })
   }
 
   const loadNotations = async (): Promise<void> => {
+    const response = await taskApi.getNotationsByTask(task._id)
 
+    setNotations(response);
   }
 
   const deleteCommentary = async (commentaryId: string): Promise<void> => {

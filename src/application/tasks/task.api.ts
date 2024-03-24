@@ -22,7 +22,7 @@ export class TaskApi {
           resolve(paginatedResponse);
         })
         .catch((error) => {
-          toast("Error to load projects", { description: error.message });
+          toast("Error to load tasks", { description: error.message });
           reject(error);
         });
     });
@@ -95,6 +95,25 @@ export class TaskApi {
           toast("Error to add notation in task", {
             description: error.message,
           });
+          reject(error);
+        });
+    });
+  }
+
+  /**
+   * @param taskId
+   */
+  getNotationsByTask(taskId: Task["_id"]): Promise<TaskNotation[]> {
+    return new Promise((resolve, reject) => {
+      serverApi
+        .get(`${this.TASK_URL}/${taskId}/notations`)
+        .then(({ data }) => {
+          const notations = data as TaskNotation[];
+
+          resolve(notations);
+        })
+        .catch((error) => {
+          toast("Error to load notations", { description: error.message });
           reject(error);
         });
     });
