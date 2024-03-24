@@ -2,7 +2,6 @@ import { Task, TaskNotation } from "@/interfaces/task.interface";
 import { useEffect, useState } from "react";
 
 import { TaskApi } from "@/application/tasks/task.api";
-import serverApi from "@/infra/api/server.api";
 import { Trash2Icon } from "lucide-react";
 import { CardComponent } from "../common/card.component";
 import { Button } from "../ui/button";
@@ -34,12 +33,8 @@ export function TaskDescription({ task }: TaskDescriptionProps) {
     setNotations(response);
   }
 
-  const deleteCommentary = async (commentaryId: string): Promise<void> => {
-    serverApi.delete(`/task/commentary/${commentaryId}`).then(() => {
-      const filtered = notations.filter(commentary => commentary._id !== commentaryId);
-
-      setNotations(filtered);
-    })
+  const deleteCommentary = async (notationId: string): Promise<void> => {
+    await taskApi.deleteNotations(task._id, notationId).then(() => loadNotations())
   }
 
   return (

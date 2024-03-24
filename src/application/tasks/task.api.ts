@@ -118,4 +118,19 @@ export class TaskApi {
         });
     });
   }
+
+  deleteNotations(
+    taskId: Task["_id"],
+    notationsId: TaskNotation["_id"]
+  ): Promise<void> {
+    return new Promise((resolve, reject) => {
+      serverApi
+        .get(`${this.TASK_URL}/${taskId}/${notationsId}/delete-notation`)
+        .then(() => resolve())
+        .catch((error) => {
+          toast("Error to try delete notation", { description: error.message });
+          reject(error);
+        });
+    });
+  }
 }
