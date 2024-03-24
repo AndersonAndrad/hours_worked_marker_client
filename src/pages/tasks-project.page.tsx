@@ -1,7 +1,7 @@
-import { TaskApi } from "@/application/tasks/task.api";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useEffect, useState } from "react";
 
+import { TaskApi } from "@/application/tasks/task.api";
 import { Container } from "@/components/common/container.component";
 import { Header } from "@/components/common/header.component";
 import { Main } from "@/components/common/main.component";
@@ -58,7 +58,7 @@ export function TasksProjectPage() {
                     <TableCell>{task.description}</TableCell>
                     <TableCell>{formatDate(task.start)} - {task?.finished && formatDate(task.finish)}</TableCell>
                     <TableCell>
-                      <TaskMenu task={task} />
+                      <TaskMenu task={task} refreshParent={loadTasks} />
                     </TableCell>
                   </TableRow>
                 ))}

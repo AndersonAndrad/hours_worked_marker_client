@@ -39,7 +39,22 @@ export class TaskApi {
           resolve(null);
         })
         .catch((error) => {
-          toast("Error to load projects", { description: error.message });
+          toast("Error to create task", { description: error.message });
+          reject(error);
+        });
+    });
+  }
+
+  delete(taskId: Task["_id"]): Promise<void> {
+    return new Promise((resolve, reject) => {
+      serverApi
+        .delete(`${this.TASK_URL}/${taskId}`)
+        .then(() => {
+          toast("Task deleted with success");
+          resolve();
+        })
+        .catch((error) => {
+          toast("Error to delete task", { description: error.message });
           reject(error);
         });
     });

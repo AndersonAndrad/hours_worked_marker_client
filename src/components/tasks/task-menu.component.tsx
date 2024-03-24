@@ -1,18 +1,22 @@
-import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "../ui/alert-dialog";
 import { BookmarkCheck, MoreVertical, Trash2 } from "lucide-react";
+import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "../ui/alert-dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
-import { Button } from "../ui/button";
-import { Task } from "@/interfaces/task.interface";
+import { TaskApi } from "@/application/tasks/task.api";
 import serverApi from "@/infra/api/server.api";
-import { toast } from "sonner";
+import { Task } from "@/interfaces/task.interface";
 import { useState } from "react";
+import { toast } from "sonner";
+import { Button } from "../ui/button";
 
 interface TaskMenuProps {
   task: Task
+  refreshParent: () => void
 }
 
-export function TaskMenu({ task }: TaskMenuProps) {
+export function TaskMenu({ task, refreshParent }: TaskMenuProps) {
+  const taskApi = new TaskApi();
+
   const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
 
   const [openFinishDialog, setOpenFinishDialog] = useState<boolean>(false);
@@ -33,12 +37,8 @@ export function TaskMenu({ task }: TaskMenuProps) {
     })
   }
 
-  const deleteTask = (): void => {
-    serverApi.post(`/task/${task._id}/pause`).then(() => {
-      toast('Task deleted successfully.')
-    }).catch((error) => {
-      toast('Unable to delete the task.', { description: error.mesage })
-    })
+  const deleteTask = async (): Promise<void> => {
+    await taskApi.delete(task._id).then(() => refreshParent())
   }
 
   const finishTask = (): void => {
