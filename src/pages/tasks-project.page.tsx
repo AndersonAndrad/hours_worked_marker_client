@@ -84,7 +84,7 @@ export function TasksProjectPage() {
       </div>
       {task &&
         <div className="w-2/5">
-          {task && <TaskDescription task={task} />}
+          {task && <TaskDescription task={task} hidden={() => setTask(undefined)} />}
         </div>
       }
     </div>

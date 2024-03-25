@@ -1,17 +1,18 @@
 import { Task, TaskNotation } from "@/interfaces/task.interface";
+import { Trash2Icon, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { TaskApi } from "@/application/tasks/task.api";
-import { Trash2Icon } from "lucide-react";
 import { CardComponent } from "../common/card.component";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 
 interface TaskDescriptionProps {
-  task: Task
+  task: Task,
+  hidden: () => void;
 }
 
-export function TaskDescription({ task }: TaskDescriptionProps) {
+export function TaskDescription({ task, hidden }: TaskDescriptionProps) {
   const taskApi = new TaskApi();
   const [notation, setNotation] = useState<string>('');
   const [notations, setNotations] = useState<TaskNotation[]>([]);
@@ -33,14 +34,21 @@ export function TaskDescription({ task }: TaskDescriptionProps) {
     setNotations(response);
   }
 
+  const hiddenNotations = () => {
+    hidden();
+  }
+
   const deleteCommentary = async (notationId: string): Promise<void> => {
     await taskApi.deleteNotations(task._id, notationId).then(() => loadNotations())
   }
 
   return (
     <CardComponent>
-      <header>
+      <header className="flex flex-row justify-between items-center">
         <span>{task?.name}</span>
+        <Button variant={'ghost'} onClick={() => hiddenNotations()}>
+          <X />
+        </Button>
       </header>
       <main className="flex flex-col">
         <Textarea
