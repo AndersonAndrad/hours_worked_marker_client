@@ -1,4 +1,5 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Filter, Task } from "@/interfaces/task.interface";
 import { useEffect, useState } from "react";
 
 import { TaskApi } from "@/application/tasks/task.api";
@@ -6,9 +7,9 @@ import { Container } from "@/components/common/container.component";
 import { Header } from "@/components/common/header.component";
 import { Main } from "@/components/common/main.component";
 import { CreateOrUpdateTask } from "@/components/tasks/createOrUpdateTask.component";
+import { FilterTaskProject } from "@/components/tasks/filter-task-project.component";
 import { TaskDescription } from "@/components/tasks/task-description.component";
 import { TaskMenu } from "@/components/tasks/task-menu.component";
-import { Task } from "@/interfaces/task.interface";
 import { formatDate } from "@/utils/date-converter.utils";
 import { useLocation } from "react-router-dom";
 
@@ -20,8 +21,18 @@ export function TasksProjectPage() {
 
   useEffect(() => { loadTasks() }, []);
 
-  const loadTasks = async (): Promise<void> => {
-    const { items } = await taskApi.findAll({ projectIds: [project._id] })
+  const loadTasks = async (filter?: Filter): Promise<void> => {
+    let final: Filter = {
+      projectIds: [project._id],
+      start: new Date(),
+      finish: new Date(),
+    }
+
+    if (filter) {
+      final = { ...final, ...filter }
+    }
+
+    const { items } = await taskApi.findAll(final)
 
     setTasks(items)
   }
@@ -37,7 +48,10 @@ export function TasksProjectPage() {
       <div className={task ? 'w-3/4' : 'w-full  '}>
         <Container>
           <Header title={project.name} pathNavigation="/tasks">
-            <CreateOrUpdateTask project={project} whenCreated={loadTasks} />
+            <div className="flex flex-row gap-2">
+              <CreateOrUpdateTask project={project} whenCreated={loadTasks} />
+              <FilterTaskProject filter={({ from, to }) => loadTasks({ start: from, finish: to })} />
+            </div>
           </Header>
           <Main>
             <Table>
