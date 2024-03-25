@@ -6,6 +6,7 @@ import { TaskApi } from "@/application/tasks/task.api";
 import { Task } from "@/interfaces/task.interface";
 import { useState } from "react";
 import { Button } from "../ui/button";
+import { UpdateTaskDialog } from "./update-task-dialog.component";
 
 interface TaskMenuProps {
   task: Task
@@ -18,6 +19,8 @@ export function TaskMenu({ task, refreshParent }: TaskMenuProps) {
   const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
 
   const [openFinishDialog, setOpenFinishDialog] = useState<boolean>(false);
+
+  const [openUpdateTaskDialog, setUpdateDialog] = useState<boolean>(false);
 
   const pauseTask = async (): Promise<void> => {
     await taskApi.togglePauseStatus(task._id).then(() => {
@@ -64,7 +67,7 @@ export function TaskMenu({ task, refreshParent }: TaskMenuProps) {
             Finish
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem disabled={task.finished}>
+          <DropdownMenuItem onClick={() => setUpdateDialog(true)} disabled={task.finished}>
             Update
           </DropdownMenuItem>
           <DropdownMenuSeparator />
@@ -107,6 +110,8 @@ export function TaskMenu({ task, refreshParent }: TaskMenuProps) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <UpdateTaskDialog open={openUpdateTaskDialog} task={task} refresh={refreshParent} />
     </>
   )
 }

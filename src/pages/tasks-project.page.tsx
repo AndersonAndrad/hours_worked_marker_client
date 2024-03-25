@@ -42,7 +42,7 @@ export function TasksProjectPage() {
   }
 
   const sortTasks = (tasks: Task[]): Task[] => {
-    const finished = tasks.filter(task => task.finished).sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
+    const finished = tasks.filter(task => task.finished).sort((a, b) => new Date(b.start).getTime() - new Date(a.start).getTime());
     const unfinished = tasks.filter(task => !task.finished).sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
 
     return [...unfinished, ...finished];
