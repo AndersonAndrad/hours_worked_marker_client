@@ -31,7 +31,11 @@ export function CreateOrUpdateTask({ project, whenCreated }: CreateOrUpdateProps
       name: taskName,
       description: taskDescription,
       project
-    }).then(() => whenCreated())
+    }).then(() => {
+      whenCreated();
+      setTaskName('');
+      setTaskDescription('');
+    })
   };
 
   return (
