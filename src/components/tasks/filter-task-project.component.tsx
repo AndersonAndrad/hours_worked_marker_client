@@ -1,6 +1,6 @@
 import { CalendarIcon, Filter } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
 
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
@@ -73,7 +73,9 @@ export function FilterTaskProject({ filter }: FilterProps) {
           </div>
         </div>
         <SheetFooter className="mt-auto">
-          <Button onClick={() => submit()}>Filter</Button>
+          <SheetClose>
+            <Button onClick={() => submit()}>Filter</Button>
+          </SheetClose>
         </SheetFooter>
       </SheetContent>
     </Sheet>
