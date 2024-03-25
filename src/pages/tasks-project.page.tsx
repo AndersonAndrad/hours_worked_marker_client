@@ -34,11 +34,18 @@ export function TasksProjectPage() {
 
     const { items } = await taskApi.findAll(final)
 
-    setTasks(items)
+    setTasks(sortTasks(items))
   }
 
   const selectTask = (task: Task): void => {
     setTask(task);
+  }
+
+  const sortTasks = (tasks: Task[]): Task[] => {
+    const finished = tasks.filter(task => task.finished).sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
+    const unfinished = tasks.filter(task => !task.finished).sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
+
+    return [...unfinished, ...finished];
   }
 
   const columns: string[] = ['Name', 'Description', 'Date', '']
