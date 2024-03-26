@@ -9,6 +9,13 @@ export interface Task {
   finished: boolean;
   paused: boolean;
   notations: TaskNotation[];
+  pauses: Pause[];
+}
+
+export interface Pause {
+  _id: string;
+  start: Date;
+  end?: Date;
 }
 
 export interface TaskNotation {

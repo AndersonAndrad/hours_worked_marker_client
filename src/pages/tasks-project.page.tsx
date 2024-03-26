@@ -1,13 +1,14 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Filter, Task } from "@/interfaces/task.interface";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { calculateFinishedTasksTime, calculateOpenedTasksTime, calculatePauseTime } from "@/utils/task.utils";
 import { useEffect, useState } from "react";
 
-import { TaskApi } from "@/application/tasks/task.api";
 import { Container } from "@/components/common/container.component";
-import { Header } from "@/components/common/header.component";
-import { Main } from "@/components/common/main.component";
 import { CreateOrUpdateTask } from "@/components/tasks/createOrUpdateTask.component";
 import { FilterTaskProject } from "@/components/tasks/filter-task-project.component";
+import { Header } from "@/components/common/header.component";
+import { Main } from "@/components/common/main.component";
+import { TaskApi } from "@/application/tasks/task.api";
 import { TaskDescription } from "@/components/tasks/task-description.component";
 import { TaskMenu } from "@/components/tasks/task-menu.component";
 import { formatDate } from "@/utils/date-converter.utils";
@@ -56,6 +57,9 @@ export function TasksProjectPage() {
         <Container>
           <Header title={project.name} pathNavigation="/tasks">
             <div className="flex flex-row gap-2">
+              <span className="flex items-center">Opened: {calculateOpenedTasksTime(tasks)}</span>
+              <span className="flex items-center">Worked: {calculateFinishedTasksTime(tasks)}</span>
+              <span className="flex items-center">Paused: {calculatePauseTime(tasks)}</span>
               <CreateOrUpdateTask project={project} whenCreated={loadTasks} />
               <FilterTaskProject filter={({ from, to }) => loadTasks({ start: from, finish: to })} />
             </div>
