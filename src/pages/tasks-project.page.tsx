@@ -49,7 +49,7 @@ export function TasksProjectPage() {
     return [...unfinished, ...finished];
   }
 
-  const columns: string[] = ['Name', 'Description', 'Date', '']
+  const columns: string[] = ['Name', 'Description', 'Time worked', 'Date', '']
 
   return (
     <div className="flex flex-row h-full gap-10">
@@ -82,6 +82,7 @@ export function TasksProjectPage() {
                     >{task.name}
                     </TableCell>
                     <TableCell>{task.description}</TableCell>
+                    <TableCell>{calculateFinishedTasksTime([task])}</TableCell>
                     <TableCell>{formatDate(task.start)} - {task?.finished && formatDate(task.finish)}</TableCell>
                     <TableCell>
                       <TaskMenu task={task} refreshParent={loadTasks} />
