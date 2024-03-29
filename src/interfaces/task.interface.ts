@@ -1,15 +1,16 @@
-import { Project } from "./project.interface";
+import { Project } from './project.interface';
 export interface Task {
   _id: string;
   name: string;
   description: string;
-  project: Omit<Project, "enabled" | "tasks">;
+  project: Omit<Project, 'enabled' | 'tasks'>;
   start: Date;
   finish?: Date;
   finished: boolean;
   paused: boolean;
   notations: TaskNotation[];
   pauses: Pause[];
+  scheduled: boolean;
 }
 
 export interface Pause {
@@ -24,7 +25,8 @@ export interface TaskNotation {
 }
 
 export interface Filter {
-  projectIds?: Project["_id"][];
+  projectIds?: Project['_id'][];
   start?: Date;
   finish?: Date;
+  scheduled?: boolean;
 }
