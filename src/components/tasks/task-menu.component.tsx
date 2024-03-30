@@ -1,4 +1,4 @@
-import { BookmarkCheck, MoreVertical, Trash2 } from "lucide-react";
+import { BookmarkCheck, MoreVertical, Soup, Trash2 } from "lucide-react";
 import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "../ui/alert-dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
@@ -18,6 +18,8 @@ export function TaskMenu({ task, refreshParent }: TaskMenuProps) {
   const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
 
   const [openFinishDialog, setOpenFinishDialog] = useState<boolean>(false);
+
+  const [openStartTaskDialog, setOpenStartTaskDialog] = useState<boolean>(false);
 
   const pauseTask = async (): Promise<void> => {
     await taskApi.togglePauseStatus(task._id).then(() => {
@@ -45,6 +47,13 @@ export function TaskMenu({ task, refreshParent }: TaskMenuProps) {
     });
   }
 
+  const startTask = async (): Promise<void> => {
+    await taskApi.startTask(task._id).then(() => {
+      refreshParent()
+      setOpenStartTaskDialog(false);
+    });
+  }
+
   return (
     <>
       <DropdownMenu>
@@ -54,10 +63,13 @@ export function TaskMenu({ task, refreshParent }: TaskMenuProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem onClick={() => pauseTask()} disabled={task.paused || task.finished}>
+          <DropdownMenuItem onClick={() => setOpenStartTaskDialog(true)} disabled={!task?.scheduled || task.finished}>
+            Start
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => pauseTask()} disabled={task?.scheduled || task.paused || task.finished}>
             Pause
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => playTask()} disabled={!task.paused || task.finished}>
+          <DropdownMenuItem onClick={() => playTask()} disabled={task?.scheduled || !task.paused || task.finished}>
             Play
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpenFinishDialog(true)} disabled={task.finished}>
@@ -103,6 +115,26 @@ export function TaskMenu({ task, refreshParent }: TaskMenuProps) {
             <Button onClick={() => deleteTask()} variant={'destructive'} className="flex flex-row gap-2">
               <Trash2 />
               Delete
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* alert start task */}
+      <AlertDialog open={openStartTaskDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle><span className="text-base font-bold">Attention !</span></AlertDialogTitle>
+            <AlertDialogDescription>
+              Do you want start <span className="font-bold">{task.name} ?</span> <br />
+              When you do this, the timer starts counting, and the task actions are released.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <Button variant={'ghost'} onClick={() => setOpenStartTaskDialog(false)}>Cancel</Button>
+            <Button onClick={() => startTask()} className="flex flex-row gap-2">
+              <Soup />
+              Start
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>

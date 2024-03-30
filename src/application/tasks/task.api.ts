@@ -141,4 +141,18 @@ export class TaskApi {
         });
     });
   }
+
+  startTask(taskId: Task['_id']): Promise<void> {
+    return new Promise((resolve, reject) => {
+      serverApi
+        .get(`${this.TASK_URL}/${taskId}/start-task`)
+        .then(() => {
+          resolve();
+        })
+        .catch((error) => {
+          toast('Error to start a task tasks', { description: error.message });
+          reject(error);
+        });
+    });
+  }
 }
