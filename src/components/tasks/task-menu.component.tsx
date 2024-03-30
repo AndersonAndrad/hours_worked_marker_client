@@ -72,7 +72,7 @@ export function TaskMenu({ task, refreshParent }: TaskMenuProps) {
           <DropdownMenuItem onClick={() => playTask()} disabled={task?.scheduled || !task.paused || task.finished}>
             Play
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setOpenFinishDialog(true)} disabled={task.finished}>
+          <DropdownMenuItem onClick={() => setOpenFinishDialog(true)} disabled={task?.scheduled || task.finished}>
             Finish
           </DropdownMenuItem>
           <DropdownMenuSeparator />
