@@ -1,7 +1,10 @@
-import { Task } from "@/interfaces/task.interface";
+import { Task } from '@/interfaces/task.interface';
 
 export const calculateOpenedTasksTime = (tasks: Task[]): string => {
   let totalTime = 0;
+
+  if (!tasks.length) return formatTime(0);
+
   tasks.forEach((task) => {
     if (!task.finished) {
       const taskTime = calculateTaskTime(task);
@@ -51,18 +54,14 @@ export const calculatePauseTime = (tasks: Task[]): string => {
 // Helper function to calculate time spent on a task considering pauses
 export const calculateTaskTime = (task: Task): number => {
   const startTime = new Date(task.start).getTime();
-  const finishTime = task.finish
-    ? new Date(task.finish).getTime()
-    : new Date().getTime();
+  const finishTime = task.finish ? new Date(task.finish).getTime() : new Date().getTime();
   let totalTime = finishTime - startTime;
 
   // Deduct time spent in pauses
   if (task.pauses && task.pauses.length > 0) {
     task.pauses.forEach((pause) => {
       const pauseStartTime = new Date(pause.start).getTime();
-      const pauseEndTime = pause?.end
-        ? new Date(pause.end).getTime()
-        : new Date().getTime();
+      const pauseEndTime = pause?.end ? new Date(pause.end).getTime() : new Date().getTime();
       totalTime -= pauseEndTime - pauseStartTime;
     });
   }

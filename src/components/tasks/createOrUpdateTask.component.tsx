@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input.tsx';
 import { Project } from '@/interfaces/project.interface';
 import { PlusIcon } from 'lucide-react';
 import { useState } from 'react';
+import { Switch } from '../ui/switch';
 import { Textarea } from '../ui/textarea';
 
 interface CreateOrUpdateProps {
@@ -25,12 +26,14 @@ export function CreateOrUpdateTask({ project, whenCreated }: CreateOrUpdateProps
   const taskApi = new TaskApi();
   const [taskName, setTaskName] = useState<string>('');
   const [taskDescription, setTaskDescription] = useState<string>('');
+  const [scheduled, setScheduled] = useState<boolean>(false);
 
   const registerTask = async () => {
     await taskApi.create({
       name: taskName,
       description: taskDescription,
-      project
+      project,
+      scheduled
     }).then(() => {
       whenCreated();
       setTaskName('');
@@ -73,6 +76,10 @@ export function CreateOrUpdateTask({ project, whenCreated }: CreateOrUpdateProps
                 value={taskDescription}
                 className='resize-none'
               />
+            </div>
+            <div className='flex flex-row items-center gap-1'>
+              <Switch id='scheduled-switch' onCheckedChange={(event) => setScheduled(event)} />
+              <label htmlFor="scheduled-switch" className='cursor-pointer select-none'>Are scheduled?</label>
             </div>
           </div>
           <DialogFooter>

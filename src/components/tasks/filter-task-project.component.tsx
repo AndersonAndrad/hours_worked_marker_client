@@ -2,22 +2,36 @@ import { CalendarIcon, Filter } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
 
+import { Filter as TaskFilter } from "@/interfaces/task.interface";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
 import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
+import { Switch } from "../ui/switch";
 
 interface FilterProps {
-  filter: (date: { from: Date, to: Date }) => void
+  filter: (filter: TaskFilter) => void
 }
 
 export function FilterTaskProject({ filter }: FilterProps) {
   const [date, setDate] = useState<DateRange | undefined>(undefined)
+  const [onlyScheduled, setOnlyScheduled] = useState<boolean>(false);
 
   const submit = () => {
-    filter({ from: date?.from || new Date, to: date?.to || new Date() })
+    let finalFilter: TaskFilter = {
+      start: date?.from || new Date(),
+      finish: date?.to || new Date(),
+    }
+
+    if (onlyScheduled) {
+      finalFilter = {
+        scheduled: onlyScheduled
+      }
+    }
+
+    filter(finalFilter);
   }
 
   return (
@@ -33,6 +47,7 @@ export function FilterTaskProject({ filter }: FilterProps) {
           </SheetDescription>
         </SheetHeader>
         <div className="flex flex-col gap-3 w-full">
+          {/* Calendar */}
           <div className={cn("grid gap-2")}>
             <Popover>
               <PopoverTrigger asChild>
@@ -70,6 +85,12 @@ export function FilterTaskProject({ filter }: FilterProps) {
                 />
               </PopoverContent>
             </Popover>
+          </div>
+
+          {/* Show schedule */}
+          <div className="flex flex-row items-center gap-2">
+            <Switch id="only-scheduled" onCheckedChange={(event) => setOnlyScheduled(event)} />
+            <label htmlFor="only-scheduled">Show only tasks scheduled</label>
           </div>
         </div>
         <SheetFooter className="mt-auto">

@@ -1,13 +1,13 @@
-import { Filter, Task, TaskNotation } from "@/interfaces/task.interface";
-import { createTasksValidate, updateTasksValidate } from "./task.validators";
+import { Filter, Task, TaskNotation } from '@/interfaces/task.interface';
+import { createTasksValidate, updateTasksValidate } from './task.validators';
 
-import { PaginatedResponse } from "@/interfaces/paginate.interface";
-import { buildParamsFromObject } from "@/utils/http.utils";
-import { toast } from "sonner";
-import serverApi from "../../infra/api/server.api";
+import { PaginatedResponse } from '@/interfaces/paginate.interface';
+import { buildParamsFromObject } from '@/utils/http.utils';
+import { toast } from 'sonner';
+import serverApi from '../../infra/api/server.api';
 
 export class TaskApi {
-  private TASK_URL: string = "tasks";
+  private TASK_URL: string = 'tasks';
 
   findAll(filter?: Filter): Promise<PaginatedResponse<Task>> {
     return new Promise((resolve, reject) => {
@@ -22,77 +22,71 @@ export class TaskApi {
           resolve(paginatedResponse);
         })
         .catch((error) => {
-          toast("Error to load tasks", { description: error.message });
+          toast('Error to load tasks', { description: error.message });
           reject(error);
         });
     });
   }
 
-  create(createTaskDto: Pick<Task, "name" | "description" | "project">) {
+  create(createTaskDto: Pick<Task, 'name' | 'description' | 'project' | 'scheduled'>) {
     createTasksValidate(createTaskDto);
 
     return new Promise((resolve, reject) => {
       serverApi
         .post(`${this.TASK_URL}`, createTaskDto)
         .then(() => {
-          toast("Task created with success");
+          toast('Task created with success');
           resolve(null);
         })
         .catch((error) => {
-          toast("Error to create task", { description: error.message });
+          toast('Error to create task', { description: error.message });
           reject(error);
         });
     });
   }
 
-  delete(taskId: Task["_id"]): Promise<void> {
+  delete(taskId: Task['_id']): Promise<void> {
     return new Promise((resolve, reject) => {
       serverApi
         .delete(`${this.TASK_URL}/${taskId}`)
         .then(() => {
-          toast("Task deleted with success");
+          toast('Task deleted with success');
           resolve();
         })
         .catch((error) => {
-          toast("Error to delete task", { description: error.message });
+          toast('Error to delete task', { description: error.message });
           reject(error);
         });
     });
   }
 
-  update(
-    taskId: Task["_id"],
-    task: Partial<Omit<Task, "start">>
-  ): Promise<void> {
+  update(taskId: Task['_id'], task: Partial<Omit<Task, 'start'>>): Promise<void> {
     updateTasksValidate(task);
 
     return new Promise((resolve, reject) => {
       serverApi
         .patch(`${this.TASK_URL}/${taskId}`, task)
         .then(() => {
-          toast("Task updated with success");
+          toast('Task updated with success');
           resolve();
         })
         .catch((error) => {
-          toast("Error to update task", { description: error.message });
+          toast('Error to update task', { description: error.message });
           reject(error);
         });
     });
   }
 
-  addNotation(
-    taskId: Task["_id"],
-    notation: Pick<TaskNotation, "notation">
-  ): Promise<void> {
+  addNotation(taskId: Task['_id'], notation: Pick<TaskNotation, 'notation'>): Promise<void> {
     return new Promise((resolve, reject) => {
       serverApi
         .post(`${this.TASK_URL}/${taskId}/add-notation`, notation)
         .then(() => {
-          toast("Notation added to tasks with success");
+          toast('Notation added to tasks with success');
           resolve();
         })
         .catch((error) => {
-          toast("Error to add notation in task", {
+          toast('Error to add notation in task', {
             description: error.message,
           });
           reject(error);
@@ -103,7 +97,7 @@ export class TaskApi {
   /**
    * @param taskId
    */
-  getNotationsByTask(taskId: Task["_id"]): Promise<TaskNotation[]> {
+  getNotationsByTask(taskId: Task['_id']): Promise<TaskNotation[]> {
     return new Promise((resolve, reject) => {
       serverApi
         .get(`${this.TASK_URL}/${taskId}/notations`)
@@ -113,37 +107,34 @@ export class TaskApi {
           resolve(notations);
         })
         .catch((error) => {
-          toast("Error to load notations", { description: error.message });
+          toast('Error to load notations', { description: error.message });
           reject(error);
         });
     });
   }
 
-  deleteNotations(
-    taskId: Task["_id"],
-    notationsId: TaskNotation["_id"]
-  ): Promise<void> {
+  deleteNotations(taskId: Task['_id'], notationsId: TaskNotation['_id']): Promise<void> {
     return new Promise((resolve, reject) => {
       serverApi
         .get(`${this.TASK_URL}/${taskId}/${notationsId}/delete-notation`)
         .then(() => resolve())
         .catch((error) => {
-          toast("Error to try delete notation", { description: error.message });
+          toast('Error to try delete notation', { description: error.message });
           reject(error);
         });
     });
   }
 
-  togglePauseStatus(taskId: Task["_id"]): Promise<void> {
+  togglePauseStatus(taskId: Task['_id']): Promise<void> {
     return new Promise((resolve, reject) => {
       serverApi
         .patch(`${this.TASK_URL}/${taskId}/toggle-status`)
         .then(() => {
-          toast("Status task changed with success");
+          toast('Status task changed with success');
           resolve();
         })
         .catch((error) => {
-          toast("Error to change pause status notations", {
+          toast('Error to change pause status notations', {
             description: error.message,
           });
           reject(error);

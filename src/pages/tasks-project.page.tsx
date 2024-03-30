@@ -1,14 +1,14 @@
-import { Filter, Task } from "@/interfaces/task.interface";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Filter, Task } from "@/interfaces/task.interface";
 import { calculateFinishedTasksTime, calculateOpenedTasksTime, calculatePauseTime } from "@/utils/task.utils";
 import { useEffect, useState } from "react";
 
+import { TaskApi } from "@/application/tasks/task.api";
 import { Container } from "@/components/common/container.component";
-import { CreateOrUpdateTask } from "@/components/tasks/createOrUpdateTask.component";
-import { FilterTaskProject } from "@/components/tasks/filter-task-project.component";
 import { Header } from "@/components/common/header.component";
 import { Main } from "@/components/common/main.component";
-import { TaskApi } from "@/application/tasks/task.api";
+import { CreateOrUpdateTask } from "@/components/tasks/createOrUpdateTask.component";
+import { FilterTaskProject } from "@/components/tasks/filter-task-project.component";
 import { TaskDescription } from "@/components/tasks/task-description.component";
 import { TaskMenu } from "@/components/tasks/task-menu.component";
 import { formatDate } from "@/utils/date-converter.utils";
@@ -19,6 +19,7 @@ export function TasksProjectPage() {
   const { state: { project } } = useLocation();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [task, setTask] = useState<Task | undefined>(undefined);
+  const [filter, setFilter] = useState<Filter | undefined>(undefined);
 
   useEffect(() => { loadTasks() }, []);
 
@@ -32,6 +33,15 @@ export function TasksProjectPage() {
     if (filter) {
       final = { ...final, ...filter }
     }
+
+    if (filter?.scheduled) {
+      final = {
+        projectIds: [project._id],
+        scheduled: filter.scheduled
+      }
+    }
+
+    setFilter(final);
 
     const { items } = await taskApi.findAll(final)
 
@@ -61,7 +71,7 @@ export function TasksProjectPage() {
               <span className="flex items-center">Worked: {calculateFinishedTasksTime(tasks)}</span>
               <span className="flex items-center">Paused: {calculatePauseTime(tasks)}</span>
               <CreateOrUpdateTask project={project} whenCreated={loadTasks} />
-              <FilterTaskProject filter={({ from, to }) => loadTasks({ start: from, finish: to })} />
+              <FilterTaskProject filter={(filter) => loadTasks(filter)} />
             </div>
           </Header>
           <Main>
