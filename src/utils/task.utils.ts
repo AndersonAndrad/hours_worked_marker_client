@@ -5,12 +5,14 @@ export const calculateOpenedTasksTime = (tasks: Task[]): string => {
 
   if (!tasks.length) return formatTime(0);
 
-  tasks.forEach((task) => {
-    if (!task.finished) {
-      const taskTime = calculateTaskTime(task);
-      totalTime += taskTime;
-    }
-  });
+  tasks
+    .filter((task) => !task.scheduled)
+    .forEach((task) => {
+      if (!task.finished) {
+        const taskTime = calculateTaskTime(task);
+        totalTime += taskTime;
+      }
+    });
 
   const totalPauseMilliseconds = pauseTime(tasks);
 

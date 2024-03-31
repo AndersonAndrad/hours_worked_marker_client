@@ -53,7 +53,7 @@ export function TasksProjectPage() {
   }
 
   const sortTasks = (tasks: Task[]): Task[] => {
-    const finished = tasks.filter(task => task.finished).sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
+    const finished = tasks.filter(task => task.finished && task.scheduled).sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
     const unfinished = tasks.filter(task => !task.finished).sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
 
     return [...unfinished, ...finished];
@@ -93,7 +93,7 @@ export function TasksProjectPage() {
                     </TableCell>
                     <TableCell>{task.description}</TableCell>
                     <TableCell>{calculateFinishedTasksTime([task])}</TableCell>
-                    <TableCell>{formatDate(task.start)} - {task?.finished && formatDate(task.finish)}</TableCell>
+                    <TableCell>{task?.start && formatDate(task.start)} - {task?.finished && formatDate(task.finish)}</TableCell>
                     <TableCell>
                       <TaskMenu task={task} refreshParent={loadTasks} />
                     </TableCell>
