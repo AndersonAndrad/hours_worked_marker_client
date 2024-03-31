@@ -1,11 +1,11 @@
 import { CalendarIcon, Filter } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
 
 import { Filter as TaskFilter } from "@/interfaces/task.interface";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { useState } from "react";
 import { DateRange } from "react-day-picker";
 import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
@@ -13,9 +13,10 @@ import { Switch } from "../ui/switch";
 
 interface FilterProps {
   filter: (filter: TaskFilter) => void
+  lastFilter: TaskFilter
 }
 
-export function FilterTaskProject({ filter }: FilterProps) {
+export function FilterTaskProject({ filter, lastFilter }: FilterProps) {
   const [date, setDate] = useState<DateRange | undefined>(undefined)
   const [onlyScheduled, setOnlyScheduled] = useState<boolean>(false);
 
@@ -33,6 +34,19 @@ export function FilterTaskProject({ filter }: FilterProps) {
 
     filter(finalFilter);
   }
+
+  useEffect(() => {
+    if (lastFilter?.start && lastFilter?.finish) {
+      setDate({
+        from: lastFilter.start,
+        to: lastFilter.finish
+      });
+    }
+
+    if (lastFilter?.scheduled) {
+      setOnlyScheduled(lastFilter.scheduled)
+    }
+  }, [lastFilter])
 
   return (
     <Sheet>
@@ -89,8 +103,8 @@ export function FilterTaskProject({ filter }: FilterProps) {
 
           {/* Show schedule */}
           <div className="flex flex-row items-center gap-2">
-            <Switch id="only-scheduled" onCheckedChange={(event) => setOnlyScheduled(event)} />
-            <label htmlFor="only-scheduled">Show only tasks scheduled</label>
+            <Switch id="only-scheduled" checked={onlyScheduled} onCheckedChange={(event) => setOnlyScheduled(event)} />
+            <label htmlFor="only-scheduled" className="cursor-pointer">Show only tasks scheduled</label>
           </div>
         </div>
         <SheetFooter className="mt-auto">
