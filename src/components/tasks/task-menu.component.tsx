@@ -1,11 +1,11 @@
-import { BookmarkCheck, MoreVertical, Soup, Trash2 } from "lucide-react";
 import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "../ui/alert-dialog";
+import { BookmarkCheck, MoreVertical, Soup, Trash2 } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
-import { TaskApi } from "@/application/tasks/task.api";
-import { Task } from "@/interfaces/task.interface";
-import { useState } from "react";
 import { Button } from "../ui/button";
+import { Task } from "@/interfaces/task.interface";
+import { TaskApi } from "@/application/tasks/task.api";
+import { useState } from "react";
 
 interface TaskMenuProps {
   task: Task
@@ -57,7 +57,7 @@ export function TaskMenu({ task, refreshParent }: TaskMenuProps) {
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger>
+        <DropdownMenuTrigger asChild>
           <Button>
             <MoreVertical />
           </Button>
