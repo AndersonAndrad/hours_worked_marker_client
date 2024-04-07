@@ -1,0 +1,12 @@
+version: '3'
+services:
+  personal_client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '5173:5173'
+    container_name: personal_saas_client
+
+networks:
+  my-network:
