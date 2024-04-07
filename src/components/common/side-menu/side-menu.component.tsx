@@ -1,5 +1,5 @@
 import { Accordion, AccordionContent, AccordionTrigger } from "../../ui/accordion";
-import { Home, LucideIcon } from "lucide-react";
+import { FolderGit2, FolderRoot, Home, LayoutDashboard, LucideIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { AccordionItem } from "@radix-ui/react-accordion";
@@ -30,9 +30,13 @@ export function SideMenu() {
   useEffect(() => {
     const items: MenuItem[] = [
       { label: 'Profile', path: '', disabled: true, icon: Home, parent: MenuAccordion.USER, selected: false, id: generateHash() },
-      { label: 'Dashboard', path: '/dashboard', disabled: true, icon: Home, parent: MenuAccordion.PROJECTS, selected: false, id: generateHash() },
-      { label: 'Projects', path: '/projects', disabled: false, icon: Home, parent: MenuAccordion.PROJECTS, selected: false, id: generateHash() },
-      { label: 'Tasks', path: '/tasks', disabled: false, icon: Home, parent: MenuAccordion.PROJECTS, selected: false, id: generateHash() },
+      // Projects
+      { label: 'Dashboard', path: '/project/dashboard', disabled: true, icon: LayoutDashboard, parent: MenuAccordion.PROJECTS, selected: false, id: generateHash() },
+      { label: 'Projects', path: '/projects', disabled: false, icon: FolderRoot, parent: MenuAccordion.PROJECTS, selected: false, id: generateHash() },
+      { label: 'Tasks', path: '/tasks', disabled: false, icon: FolderGit2, parent: MenuAccordion.PROJECTS, selected: false, id: generateHash() },
+
+      // Financy
+      { label: 'Dashboard', path: '/financy/dashboard', disabled: true, icon: LayoutDashboard, parent: MenuAccordion.FINANCY, selected: false, id: generateHash() },
       { label: 'Financy', path: '', disabled: true, icon: Home, parent: MenuAccordion.FINANCY, selected: false, id: generateHash() },
     ]
     setMenuItems(items);
