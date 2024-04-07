@@ -8,6 +8,7 @@ import { CreateOrUpdateTask } from "@/components/tasks/createOrUpdateTask.compon
 import { FilterTaskProject } from "@/components/tasks/filter-task-project.component";
 import { Header } from "@/components/common/header.component";
 import { Main } from "@/components/common/main.component";
+import { SideNotation } from "@/components/tasks/side-notations.component";
 import { TaskApi } from "@/application/tasks/task.api";
 import { TaskMenu } from "@/components/tasks/task-menu.component";
 import { firstLetterUppercase } from "@/utils/string.utils";
@@ -96,7 +97,9 @@ export function TasksProjectPage() {
           <TableBody>
             {tasks && tasks.map(task => (
               <TableRow key={task._id}>
-                <TableCell>test</TableCell>
+                <TableCell>
+                  <SideNotation key={task._id} task={task} />
+                </TableCell>
                 <TableCell>{task.description}</TableCell>
                 <TableCell>{calculateFinishedTasksTime([task])}</TableCell>
                 <TableCell>{task?.start && formatDate(task.start)} - {task?.finished && formatDate(task.finish)}</TableCell>
