@@ -1,7 +1,7 @@
-import { Outlet } from "react-router-dom";
 import { CardComponent } from "./components/common/card.component";
 import { Navbar } from "./components/common/navbar.component";
-import { SideMenu } from "./components/common/side-menu.component";
+import { Outlet } from "react-router-dom";
+import { SideMenu } from "./components/common/side-menu/side-menu.component";
 import { Toaster } from "./components/ui/sonner";
 
 export function App() {
