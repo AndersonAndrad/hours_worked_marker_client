@@ -102,7 +102,12 @@ export function TasksProjectPage() {
                 </TableCell>
                 <TableCell>{task.description}</TableCell>
                 <TableCell>{calculateFinishedTasksTime([task])}</TableCell>
-                <TableCell>{task?.start && formatDate(task.start)} - {task?.finished && formatDate(task.finish)}</TableCell>
+                <TableCell>
+                  <div className="flex flex-col">
+                    <span>{task?.start && formatDate(task.start)}</span>
+                    <span>{task?.finished && formatDate(task.finish)}</span>
+                  </div>
+                </TableCell>
                 <TableCell>
                   <TaskMenu task={task} refreshParent={loadTasks} />
                 </TableCell>

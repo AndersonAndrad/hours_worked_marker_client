@@ -1,19 +1,6 @@
-import { Task } from "@/interfaces/task.interface.ts";
+import { Task } from '@/interfaces/task.interface.ts';
 
-const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
+const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 /**
  * convert date to Month day, year
@@ -22,10 +9,13 @@ const months = [
 export const formatDate = (date: Date | undefined): string => {
   const newDate = new Date(date ?? new Date());
 
-  const dateFormatter = new Intl.DateTimeFormat("en-US", {
-    day: "numeric",
-    month: "short", // 'short' will give you the abbreviated month name
-    year: "numeric",
+  const dateFormatter = new Intl.DateTimeFormat('en-US', {
+    day: 'numeric',
+    month: 'short', // 'short' will give you the abbreviated month name
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
   });
 
   return dateFormatter.format(newDate);
