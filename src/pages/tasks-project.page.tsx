@@ -97,10 +97,10 @@ export function TasksProjectPage() {
           <TableBody>
             {tasks && tasks.map(task => (
               <TableRow key={task._id}>
-                <TableCell>
+                <TableCell className="w-1/4">
                   <SideNotation key={task._id} task={task} />
                 </TableCell>
-                <TableCell>{task.description}</TableCell>
+                <TableCell className="w-1/4">{task.description}</TableCell>
                 <TableCell>{calculateFinishedTasksTime([task])}</TableCell>
                 <TableCell>
                   <div className="flex flex-col">

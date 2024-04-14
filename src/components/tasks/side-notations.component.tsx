@@ -42,7 +42,7 @@ export function SideNotation({ task }: SideNotationProps) {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button className={task?.finished ? 'line-through' : ''}>
+        <Button className={`h-fit text-start text-wrap ${task?.finished ? 'line-through' : ''}`}>
           {task.name}
         </Button>
       </SheetTrigger>
