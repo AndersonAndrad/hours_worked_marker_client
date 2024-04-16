@@ -17,6 +17,7 @@ export interface Pause {
   _id: string;
   start: Date;
   end?: Date;
+  activityBeforePause?: string;
 }
 
 export interface TaskNotation {

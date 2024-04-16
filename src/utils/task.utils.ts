@@ -1,4 +1,4 @@
-import { Task } from '@/interfaces/task.interface';
+import { Pause, Task } from '@/interfaces/task.interface';
 
 export const calculateOpenedTasksTime = (tasks: Task[]): string => {
   let totalTime = 0;
@@ -69,6 +69,33 @@ export const calculateTaskTime = (task: Task): number => {
   }
 
   return totalTime;
+};
+
+export const calculateTotalTime = (start: Date, finish?: Date): string => {
+  const startTime = new Date(start).getTime();
+  const finishTime = finish ? new Date(finish).getTime() : new Date().getTime();
+  return formatTime(finishTime - startTime);
+};
+
+export const calculateWorkedPeriods = (pauses: Pause[]): Pause[] => {
+  const workedPeriods: Pause[] = [];
+
+  for (let i = 0; i < pauses.length - 1; i++) {
+    const currentPause = pauses[i];
+    const nextPause = pauses[i + 1];
+
+    if (currentPause.end !== null && nextPause.start !== null) {
+      const workedPeriod: Pause = {
+        _id: currentPause._id,
+        start: currentPause.end!,
+        end: nextPause.start,
+      };
+
+      workedPeriods.push(workedPeriod);
+    }
+  }
+
+  return workedPeriods;
 };
 
 export const formatTime = (ms: number): string => {

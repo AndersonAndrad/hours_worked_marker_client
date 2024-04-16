@@ -1,11 +1,12 @@
-import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "../ui/alert-dialog";
 import { BookmarkCheck, MoreVertical, Soup, Trash2 } from "lucide-react";
+import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "../ui/alert-dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
-import { Button } from "../ui/button";
-import { Task } from "@/interfaces/task.interface";
 import { TaskApi } from "@/application/tasks/task.api";
+import { Task } from "@/interfaces/task.interface";
 import { useState } from "react";
+import { Button } from "../ui/button";
+import { PauseTaskDialog } from "./pause-task-dialog.component";
 
 interface TaskMenuProps {
   task: Task
@@ -20,6 +21,8 @@ export function TaskMenu({ task, refreshParent }: TaskMenuProps) {
   const [openFinishDialog, setOpenFinishDialog] = useState<boolean>(false);
 
   const [openStartTaskDialog, setOpenStartTaskDialog] = useState<boolean>(false);
+
+  const [openSidePausedTimeSheet, setOpenSidePausedTimeSheet] = useState<boolean>(false);
 
   const pauseTask = async (): Promise<void> => {
     await taskApi.togglePauseStatus(task._id).then(() => {
@@ -63,6 +66,10 @@ export function TaskMenu({ task, refreshParent }: TaskMenuProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
+          <DropdownMenuItem onClick={() => setOpenSidePausedTimeSheet(true)}>
+            History paused
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setOpenStartTaskDialog(true)} disabled={!task?.scheduled || task.finished}>
             Start
           </DropdownMenuItem>
@@ -85,6 +92,9 @@ export function TaskMenu({ task, refreshParent }: TaskMenuProps) {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      {/* Side sheet time paused */}
+      <PauseTaskDialog task={task} opened={openSidePausedTimeSheet} onClose={() => setOpenSidePausedTimeSheet(false)} />
 
       {/* alert finish task */}
       <AlertDialog open={openFinishDialog}>
