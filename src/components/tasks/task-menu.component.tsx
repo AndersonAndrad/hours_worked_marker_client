@@ -7,6 +7,7 @@ import { Task } from "@/interfaces/task.interface";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { PauseTaskDialog } from "./pause-task-dialog.component";
+import { PauseTaskHistoryDialog } from "./pause-task-history-dialog.component";
 
 interface TaskMenuProps {
   task: Task
@@ -22,13 +23,9 @@ export function TaskMenu({ task, refreshParent }: TaskMenuProps) {
 
   const [openStartTaskDialog, setOpenStartTaskDialog] = useState<boolean>(false);
 
-  const [openSidePausedTimeSheet, setOpenSidePausedTimeSheet] = useState<boolean>(false);
+  const [openStartPauseTaskDialog, setOpenStartPauseTaskDialog] = useState<boolean>(false);
 
-  const pauseTask = async (): Promise<void> => {
-    await taskApi.togglePauseStatus(task._id).then(() => {
-      refreshParent();
-    })
-  }
+  const [openSidePausedTimeSheet, setOpenSidePausedTimeSheet] = useState<boolean>(false);
 
   const playTask = async (): Promise<void> => {
     await taskApi.togglePauseStatus(task._id).then(() => {
@@ -73,7 +70,7 @@ export function TaskMenu({ task, refreshParent }: TaskMenuProps) {
           <DropdownMenuItem onClick={() => setOpenStartTaskDialog(true)} disabled={!task?.scheduled || task.finished}>
             Start
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => pauseTask()} disabled={task?.scheduled || task.paused || task.finished}>
+          <DropdownMenuItem onClick={() => setOpenStartPauseTaskDialog(true)} disabled={task?.scheduled || task.paused || task.finished}>
             Pause
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => playTask()} disabled={task?.scheduled || !task.paused || task.finished}>
@@ -93,8 +90,11 @@ export function TaskMenu({ task, refreshParent }: TaskMenuProps) {
         </DropdownMenuContent>
       </DropdownMenu>
 
+      {/* Add task to pause */}
+      <PauseTaskDialog task={task} refreshParent={() => { refreshParent() }} opened={openStartPauseTaskDialog} onClose={() => { setOpenStartPauseTaskDialog(false) }} />
+
       {/* Side sheet time paused */}
-      <PauseTaskDialog task={task} opened={openSidePausedTimeSheet} onClose={() => setOpenSidePausedTimeSheet(false)} />
+      <PauseTaskHistoryDialog task={task} opened={openSidePausedTimeSheet} onClose={() => setOpenSidePausedTimeSheet(false)} />
 
       {/* alert finish task */}
       <AlertDialog open={openFinishDialog}>

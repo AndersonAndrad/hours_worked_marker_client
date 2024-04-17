@@ -1,4 +1,4 @@
-import { Filter, Task, TaskNotation } from '@/interfaces/task.interface';
+import { Filter, Pause, Task, TaskNotation } from '@/interfaces/task.interface';
 import { createTasksValidate, updateTasksValidate } from './task.validators';
 
 import { PaginatedResponse } from '@/interfaces/paginate.interface';
@@ -125,10 +125,10 @@ export class TaskApi {
     });
   }
 
-  togglePauseStatus(taskId: Task['_id']): Promise<void> {
+  togglePauseStatus(taskId: Task['_id'], pauseTask?: Partial<Omit<Pause, '_id'>>): Promise<void> {
     return new Promise((resolve, reject) => {
       serverApi
-        .patch(`${this.TASK_URL}/${taskId}/toggle-status`)
+        .patch(`${this.TASK_URL}/${taskId}/toggle-status`, pauseTask)
         .then(() => {
           toast('Status task changed with success');
           resolve();

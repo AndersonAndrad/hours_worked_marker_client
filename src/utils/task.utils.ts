@@ -89,6 +89,7 @@ export const calculateWorkedPeriods = (pauses: Pause[]): Pause[] => {
         _id: currentPause._id,
         start: currentPause.end!,
         end: nextPause.start,
+        activityBeforePause: currentPause.activityBeforePause,
       };
 
       workedPeriods.push(workedPeriod);
