@@ -8,3 +8,6 @@ docker-compose build
 
 # Start the Docker containers
 docker-compose up -d
+
+# Remove dangling images
+docker image prune -f
