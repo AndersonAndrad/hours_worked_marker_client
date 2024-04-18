@@ -1,9 +1,9 @@
-import { Pause, Task } from "@/interfaces/task.interface";
 import { Dialog, DialogContent, DialogDescription, DialogHeader } from "../ui/dialog";
+import { Pause, Task } from "@/interfaces/task.interface";
+import { useEffect, useState } from "react";
 
-import { TaskApi } from "@/application/tasks/task.api";
-import { useState } from "react";
 import { Button } from "../ui/button";
+import { TaskApi } from "@/application/tasks/task.api";
 import { Textarea } from "../ui/textarea";
 
 interface PauseTaskDialogProps {
@@ -18,7 +18,11 @@ export function PauseTaskDialog(props: PauseTaskDialogProps) {
   const taskApi = new TaskApi();
 
   const [description, setDescription] = useState<string>('');
-  const [startDate] = useState<Date>(new Date());
+  const [startDate, setStartDate] = useState<Date | undefined>(new Date);
+
+  useEffect(() => {
+    setStartDate(new Date())
+  }, [props])
 
   const pauseTask = async (): Promise<void> => {
     const pauseTask: Partial<Omit<Pause, '_id'>> = {
@@ -29,6 +33,7 @@ export function PauseTaskDialog(props: PauseTaskDialogProps) {
     await taskApi.togglePauseStatus(task._id, pauseTask).then(() => {
       refreshParent();
       onClose();
+      setStartDate(undefined);
     })
   }
 

@@ -1,12 +1,12 @@
-import { SendHorizonal, Trash2Icon } from "lucide-react";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
 import { Task, TaskNotation } from "@/interfaces/task.interface";
+import { SendHorizonal, Trash2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
 
+import { TaskApi } from "@/application/tasks/task.api";
 import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
 import { Separator } from "../ui/separator";
-import { TaskApi } from "@/application/tasks/task.api";
 import { Textarea } from "../ui/textarea";
 
 interface SideNotationProps {

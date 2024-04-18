@@ -1,6 +1,6 @@
 import { BookmarkCheck, MoreVertical, Soup, Trash2 } from "lucide-react";
 import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "../ui/alert-dialog";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
 import { TaskApi } from "@/application/tasks/task.api";
 import { Task } from "@/interfaces/task.interface";
@@ -63,9 +63,21 @@ export function TaskMenu({ task, refreshParent }: TaskMenuProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem onClick={() => setOpenSidePausedTimeSheet(true)}>
-            History paused
-          </DropdownMenuItem>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>
+              <span>Utils</span>
+            </DropdownMenuSubTrigger>
+            <DropdownMenuPortal>
+              <DropdownMenuSubContent>
+                <DropdownMenuItem onClick={() => setOpenSidePausedTimeSheet(true)}>
+                  History paused
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  Add notation
+                </DropdownMenuItem>
+              </DropdownMenuSubContent>
+            </DropdownMenuPortal>
+          </DropdownMenuSub>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setOpenStartTaskDialog(true)} disabled={!task?.scheduled || task.finished}>
             Start
