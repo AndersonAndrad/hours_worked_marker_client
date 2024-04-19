@@ -1,24 +1,25 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useEffect, useState } from 'react';
 
+import { ProjectApi } from '@/application/project/project.api';
 import { Container } from '@/components/common/container.component';
-import { CreateOrUpdateProject } from '@/components/project/createOrUpdate.component';
 import { FooterPagination } from '@/components/common/footer-pagination.component';
 import { Main } from '@/components/common/main.component';
+import { CreateOrUpdateProject } from '@/components/project/createOrUpdate.component';
 import { MenuActionProject } from '@/components/project/menu-action-project.component';
 import { Project } from '@/interfaces/project.interface';
 import { maskMoney } from '@/utils/currency.utils';
-import serverApi from "@/infra/api/server.api";
 
 export function ProjectsPage() {
+  const projectApi = new ProjectApi();
   const [projects, setProjects] = useState<Project[]>([]);
 
   useEffect(() => { loadProjects() }, []);
 
   const loadProjects = async () => {
-    const { data } = await serverApi.get('project/find-all')
-    const { items } = data as { items: Project[] }
-    setProjects(items)
+    await projectApi.findAll().then(({ items }) => {
+      setProjects(items)
+    })
   }
 
   const columns: string[] = ['Name', 'Price per hour', 'Number of tasks', '']
