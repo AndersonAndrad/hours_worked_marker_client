@@ -77,26 +77,50 @@ export const calculateTotalTime = (start: Date, finish?: Date): string => {
   return formatTime(finishTime - startTime);
 };
 
-export const calculateWorkedPeriods = (pauses: Pause[]): Pause[] => {
+export const calculateWorkedPeriods = (task: Task): { workedPeriods: Pause[]; msTimeWorked: number } => {
+  task.pauses = task.pauses.slice().reverse();
+  const { start, pauses, finish } = task;
   const workedPeriods: Pause[] = [];
 
-  for (let i = 0; i < pauses.length - 1; i++) {
-    const currentPause = pauses[i];
-    const nextPause = pauses[i + 1];
+  let previousEndTime = new Date(start);
+  let totalTimeWorked = 0;
 
-    if (currentPause.end !== null && nextPause.start !== null) {
-      const workedPeriod: Pause = {
-        _id: currentPause._id,
-        start: currentPause.end!,
-        end: nextPause.start,
-        activityBeforePause: currentPause.activityBeforePause,
-      };
+  for (const pause of pauses) {
+    if (!pause?.end) continue;
 
-      workedPeriods.push(workedPeriod);
-    }
+    const pauseStart = new Date(pause.start);
+    const pauseEnd = new Date(pause.end);
+
+    const workedPeriod = {
+      _id: pause._id,
+      start: previousEndTime,
+      end: pauseStart,
+      description: pause.activityBeforePause,
+    };
+
+    workedPeriods.push(workedPeriod);
+
+    const periodDuration = pauseStart.getTime() - previousEndTime.getTime();
+    totalTimeWorked += periodDuration;
+
+    previousEndTime = pauseEnd;
   }
 
-  return workedPeriods;
+  if (finish) {
+    const lastWorkedPeriod = {
+      _id: pauses[pauses.length - 1]._id,
+      start: previousEndTime,
+      end: new Date(finish),
+      description: '',
+    };
+
+    workedPeriods.push(lastWorkedPeriod);
+
+    const lastPeriodDuration = lastWorkedPeriod.end.getTime() - previousEndTime.getTime();
+    totalTimeWorked += lastPeriodDuration;
+  }
+
+  return { workedPeriods, totalTimeWorked };
 };
 
 export const formatTime = (ms: number): string => {
