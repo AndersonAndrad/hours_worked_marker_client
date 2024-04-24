@@ -1,19 +1,20 @@
-import { Filter, Task } from "@/interfaces/task.interface";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Filter, Task } from "@/interfaces/task.interface";
 import { calculateFinishedTasksTime, calculateOpenedTasksTime, calculatePauseTime } from "@/utils/task.utils";
+import { BookmarkCheck, Clock5, Pause, } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { TaskApi } from "@/application/tasks/task.api";
 import { Container } from "@/components/common/container.component";
-import { CreateOrUpdateTask } from "@/components/tasks/createOrUpdateTask.component";
-import { FilterTaskProject } from "@/components/tasks/filter-task-project.component";
 import { Header } from "@/components/common/header.component";
 import { Main } from "@/components/common/main.component";
+import { CreateOrUpdateTask } from "@/components/tasks/createOrUpdateTask.component";
+import { FilterTaskProject } from "@/components/tasks/filter-task-project.component";
 import { SideNotation } from "@/components/tasks/side-notations.component";
-import { TaskApi } from "@/application/tasks/task.api";
 import { TaskMenu } from "@/components/tasks/task-menu.component";
-import { firstLetterUppercase } from "@/utils/string.utils";
 import { formatDate } from "@/utils/date-converter.utils";
 import { objectIsNotEmpty } from "@/utils/object.utils";
+import { firstLetterUppercase } from "@/utils/string.utils";
 import { useLocation } from "react-router-dom";
 
 export function TasksProjectPage() {
@@ -72,7 +73,15 @@ export function TasksProjectPage() {
     return [...unfinished, ...finished];
   }
 
-  const columns: string[] = ['Name', 'Description', 'Time worked', 'Date', '']
+  const taskStatus = (task: Task): JSX.Element => {
+    if (task.finished) return <BookmarkCheck />
+
+    if (task.paused) return <Pause />
+
+    return <Clock5 />
+  }
+
+  const columns: string[] = ['Name', 'Description', 'Status', 'Time worked', 'Date', '']
 
   return (
     <Container>
@@ -101,6 +110,7 @@ export function TasksProjectPage() {
                   <SideNotation key={task._id} task={task} />
                 </TableCell>
                 <TableCell className="w-1/4">{task.description}</TableCell>
+                <TableCell className="items-center">{taskStatus(task)}</TableCell>
                 <TableCell>{calculateFinishedTasksTime([task])}</TableCell>
                 <TableCell>
                   <div className="flex flex-col">
