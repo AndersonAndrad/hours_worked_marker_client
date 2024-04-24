@@ -1,9 +1,10 @@
-import { Dialog, DialogContent, DialogDescription, DialogHeader } from "../ui/dialog";
 import { Pause, Task } from "@/interfaces/task.interface";
 import { useEffect, useState } from "react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader } from "../ui/dialog";
 
-import { Button } from "../ui/button";
 import { TaskApi } from "@/application/tasks/task.api";
+import { Pause as PauseIcon } from "lucide-react";
+import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 
 interface PauseTaskDialogProps {
@@ -47,7 +48,10 @@ export function PauseTaskDialog(props: PauseTaskDialogProps) {
             <Textarea className="resize-none min-h-28" maxLength={250} onChange={(event) => setDescription(event.target.value)} />
           </div>
           <div className="flex flex-row justify-end h-fit">
-            <Button onClick={async () => { await pauseTask() }}>Pause</Button>
+            <Button onClick={async () => { await pauseTask() }} className="flex flex-row gap-2">
+              <PauseIcon />
+              Pause
+            </Button>
           </div>
         </div>
       </DialogContent>
