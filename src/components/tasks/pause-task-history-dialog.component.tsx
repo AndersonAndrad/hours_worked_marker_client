@@ -1,12 +1,12 @@
+import { calculatePauseTime, calculateTotalTime, calculateWorkedPeriods } from "@/utils/task.utils";
 import { Dialog, DialogContent, DialogDescription, DialogHeader } from "../ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { calculatePauseTime, calculateTotalTime, calculateWorkedPeriods, formatTime } from "@/utils/task.utils";
 
-import { ScrollArea } from "../ui/scroll-area";
-import { Separator } from "../ui/separator";
 import { Task } from "@/interfaces/task.interface";
 import { formatDate } from "@/utils/date-converter.utils";
 import { useState } from "react";
+import { ScrollArea } from "../ui/scroll-area";
+import { Separator } from "../ui/separator";
 
 interface PauseTaskDialogProps {
   task: Task;
@@ -83,12 +83,9 @@ const HistorySubTask = (props: HistorySubTaskProps) => {
 
   return (
     <div className="flex flex-col gap-4 text-sm">
-      <header>
-        <span>Total paused: {formatTime(calculateWorkedPeriods(task).msTimeWorked)}</span>
-      </header>
       <div className="grid grid-cols-2 gap-2">
         <ScrollArea className="h-full max-h-96 rounded-md border overflow-auto">
-          {task && calculateWorkedPeriods(task).workedPeriods.map((pause, index) => {
+          {task && calculateWorkedPeriods(task).map((pause, index) => {
             return (
               <div className="cursor-pointer" key={index} onClick={() => setActivityBeforePause(pause.activityBeforePause ?? '')}>
                 <ul className="flex flex-col gap-1 py-3 px-1">

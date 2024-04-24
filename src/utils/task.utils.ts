@@ -77,13 +77,14 @@ export const calculateTotalTime = (start: Date, finish?: Date): string => {
   return formatTime(finishTime - startTime);
 };
 
-export const calculateWorkedPeriods = (task: Task): { workedPeriods: Pause[]; msTimeWorked: number } => {
+export const calculateWorkedPeriods = (task: Task): Pause[] => {
+  if (!task.pauses.length) return [];
+
   task.pauses = task.pauses.slice().reverse();
   const { start, pauses, finish } = task;
   const workedPeriods: Pause[] = [];
 
   let previousEndTime = new Date(start);
-  let totalTimeWorked = 0;
 
   for (const pause of pauses) {
     if (!pause?.end) continue;
@@ -100,9 +101,6 @@ export const calculateWorkedPeriods = (task: Task): { workedPeriods: Pause[]; ms
 
     workedPeriods.push(workedPeriod);
 
-    const periodDuration = pauseStart.getTime() - previousEndTime.getTime();
-    totalTimeWorked += periodDuration;
-
     previousEndTime = pauseEnd;
   }
 
@@ -115,12 +113,9 @@ export const calculateWorkedPeriods = (task: Task): { workedPeriods: Pause[]; ms
     };
 
     workedPeriods.push(lastWorkedPeriod);
-
-    const lastPeriodDuration = lastWorkedPeriod.end.getTime() - previousEndTime.getTime();
-    totalTimeWorked += lastPeriodDuration;
   }
 
-  return { workedPeriods, totalTimeWorked };
+  return workedPeriods;
 };
 
 export const formatTime = (ms: number): string => {
