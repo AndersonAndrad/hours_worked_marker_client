@@ -1,12 +1,12 @@
-import { Accordion, AccordionContent, AccordionTrigger } from "../../ui/accordion";
 import { FileBarChart, FolderGit2, FolderRoot, HandCoins, Home, LayoutDashboard, LucideIcon, WalletCards } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Accordion, AccordionContent, AccordionTrigger } from "../../ui/accordion";
 
-import { AccordionItem } from "@radix-ui/react-accordion";
-import { SideMenuOption } from "./side-menu-option.component";
-import { firstLetterUppercase } from "@/utils/string.utils";
 import { generateHash } from "@/utils/base64.utils";
+import { firstLetterUppercase } from "@/utils/string.utils";
+import { AccordionItem } from "@radix-ui/react-accordion";
 import packageJson from '../../../../package.json';
+import { SideMenuOption } from "./side-menu-option.component";
 
 interface MenuItem {
   label: string;
@@ -32,7 +32,7 @@ export function SideMenu() {
       { label: 'Profile', path: '', disabled: true, icon: Home, parent: MenuAccordion.USER, selected: false, id: generateHash() },
 
       // Projects
-      { label: 'Dashboard', path: '/project/dashboard', disabled: true, icon: LayoutDashboard, parent: MenuAccordion.PROJECTS, selected: false, id: generateHash() },
+      { label: 'Dashboard', path: '/project/dashboard', disabled: false, icon: LayoutDashboard, parent: MenuAccordion.PROJECTS, selected: false, id: generateHash() },
       { label: 'Projects', path: '/projects', disabled: false, icon: FolderRoot, parent: MenuAccordion.PROJECTS, selected: false, id: generateHash() },
       { label: 'Tasks', path: '/tasks', disabled: false, icon: FolderGit2, parent: MenuAccordion.PROJECTS, selected: false, id: generateHash() },
 
