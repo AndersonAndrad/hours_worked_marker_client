@@ -2,6 +2,7 @@ import { Filter, Pause, Task, TaskNotation } from '@/interfaces/task.interface';
 import { createTasksValidate, updateTasksValidate } from './task.validators';
 
 import { PaginatedResponse } from '@/interfaces/paginate.interface';
+import { convertCentsToMoney } from '@/utils/currency.utils';
 import { buildParamsFromObject } from '@/utils/http.utils';
 import { toast } from 'sonner';
 import serverApi from '../../infra/api/server.api';
@@ -14,11 +15,18 @@ export class TaskApi {
       serverApi
         .get(`${this.TASK_URL}?${buildParamsFromObject(filter)}`)
         .then(({ data }) => {
-          const { items, meta } = data as PaginatedResponse<Task>;
+          let { items, meta } = data as PaginatedResponse<Task>;
+          items = items.map((item) => {
+            item.project.hoursPrice = convertCentsToMoney(item.project.hoursPrice);
+
+            return item;
+          });
+
           const paginatedResponse: PaginatedResponse<Task> = {
             items,
             meta,
           };
+
           resolve(paginatedResponse);
         })
         .catch((error) => {

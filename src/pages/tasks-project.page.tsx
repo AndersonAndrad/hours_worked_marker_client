@@ -1,6 +1,6 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Filter, Task } from "@/interfaces/task.interface";
-import { calculateFinishedTasksTime, calculateOpenedTasksTime, calculatePauseTime } from "@/utils/task.utils";
+import { allCalculators, finishedTaskTime } from "@/utils/task.utils";
 import { BookmarkCheck, Clock5, Pause, } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -22,8 +22,9 @@ export function TasksProjectPage() {
   const { state: { project } } = useLocation();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<Filter>({});
+  const { finishedTask, moneyEarned, openedTask, pauseTask } = allCalculators(tasks)
 
-  useEffect(() => { loadTasks() }, []);
+  useEffect(() => { loadTasks() }, [project]);
 
   const loadTasks = async (filter?: Filter): Promise<void> => {
     let final: Filter = {}
@@ -87,9 +88,10 @@ export function TasksProjectPage() {
     <Container>
       <Header title={project.name} pathNavigation="/tasks">
         <div className="flex flex-row gap-2">
-          <span className="flex items-center">Opened: {calculateOpenedTasksTime(tasks)}</span>
-          <span className="flex items-center">Worked: {calculateFinishedTasksTime(tasks)}</span>
-          <span className="flex items-center">Paused: {calculatePauseTime(tasks)}</span>
+          <span className="flex items-center">Gain: {moneyEarned}</span>
+          <span className="flex items-center">Opened: {openedTask}</span>
+          <span className="flex items-center">Worked: {finishedTask}</span>
+          <span className="flex items-center">Paused: {pauseTask}</span>
           <CreateOrUpdateTask project={project} whenCreated={loadTasks} />
           <FilterTaskProject filter={(filter) => loadTasks(filter)} lastFilter={filter} />
         </div>
@@ -111,7 +113,7 @@ export function TasksProjectPage() {
                 </TableCell>
                 <TableCell className="w-1/4">{task.description}</TableCell>
                 <TableCell className="items-center">{taskStatus(task)}</TableCell>
-                <TableCell>{calculateFinishedTasksTime([task])}</TableCell>
+                <TableCell>{finishedTaskTime([task])}</TableCell>
                 <TableCell>
                   <div className="flex flex-col">
                     <span>{task?.start && formatDate(task.start)}</span>

@@ -1,17 +1,18 @@
 import { FilterSideDashboard, SideFilterDashboard } from "@/components/dashboard/side-filter.component";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Filter, Task } from "@/interfaces/task.interface";
+import { allCalculators } from "@/utils/task.utils";
 
 import { DashboardApi } from "@/application/dashboard/dashboard.api";
 import { Container } from "@/components/common/container.component";
 import { Main } from "@/components/common/main.component";
-import { calculateFinishedTasksTime } from "@/utils/task.utils";
 import { useState } from 'react';
 
 export function ProjectDashboard() {
   const dashboardApi = new DashboardApi();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [projectName, setProjectName] = useState<string>('no projects researched');
+  const { finishedTask, moneyEarned, openedTask, pauseTask } = allCalculators(tasks)
 
   const initTasks = async (filter?: Filter) => {
     await dashboardApi.findAll(filter).then(loadedTasks => {
@@ -45,7 +46,7 @@ export function ProjectDashboard() {
           <Card>
             <CardHeader>
               <CardTitle>Monthly time worked</CardTitle>
-              <CardDescription className="mx-auto">{calculateFinishedTasksTime(tasks)}</CardDescription>
+              <CardDescription className="mx-auto">{finishedTask}</CardDescription>
             </CardHeader>
           </Card>
         </header>

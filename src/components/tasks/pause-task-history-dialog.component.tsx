@@ -1,12 +1,12 @@
-import { calculatePauseTime, calculateTotalTime, calculateWorkedPeriods } from "@/utils/task.utils";
 import { Dialog, DialogContent, DialogDescription, DialogHeader } from "../ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { calculateTotalTime, calculateWorkedPeriods, pauseTime } from "@/utils/task.utils";
 
+import { ScrollArea } from "../ui/scroll-area";
+import { Separator } from "../ui/separator";
 import { Task } from "@/interfaces/task.interface";
 import { formatDate } from "@/utils/date-converter.utils";
 import { useState } from "react";
-import { ScrollArea } from "../ui/scroll-area";
-import { Separator } from "../ui/separator";
 
 interface PauseTaskDialogProps {
   task: Task;
@@ -55,7 +55,7 @@ const HistoryPaused = (props: HistoryPausedProps) => {
   return (
     <div className="flex flex-col gap-4 text-sm">
       <header>
-        <span>Total paused: {calculatePauseTime([task])}</span>
+        <span>Total paused: {pauseTime([task])}</span>
       </header>
 
       <ScrollArea className="h-full max-h-96 rounded-md border overflow-auto">

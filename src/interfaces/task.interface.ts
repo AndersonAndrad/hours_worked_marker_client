@@ -31,3 +31,10 @@ export interface Filter {
   finish?: Date;
   scheduled?: boolean;
 }
+
+export interface CalculatorTask {
+  openedTask: string;
+  finishedTask: string;
+  pauseTask: string;
+  moneyEarned: string;
+}
