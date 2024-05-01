@@ -26,7 +26,7 @@ export function SideNotation({ task }: SideNotationProps) {
     await taskApi.addNotation(task._id, { notation }).then(() => {
       loadNotations()
       setNotation('');
-    }).catch((error) => console.log(error))
+    })
   }
 
   const loadNotations = async (): Promise<void> => {

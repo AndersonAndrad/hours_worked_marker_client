@@ -1,11 +1,12 @@
+import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { useEffect, useState } from 'react';
 
 import { CardComponent } from '@/components/common/card.component';
 import { Container } from '@/components/common/container.component';
 import { Header } from '@/components/common/header.component';
 import { Main } from '@/components/common/main.component';
-import { Project } from '@/interfaces/project.interface';
 import serverApi from "@/infra/api/server.api";
+import { Project } from '@/interfaces/project.interface';
 import { useNavigate } from 'react-router-dom';
 
 export function TasksPage() {
@@ -34,13 +35,11 @@ export function TasksPage() {
                     {
                         projects && projects.map(project => (
                             <CardComponent key={project._id}>
-                                <div
-                                    className='flex flex-row justify-between cursor-pointer'
-                                    onClick={() => { navigateToProject(project) }}
-                                >
-                                    <span className='text-base font-bold'>{project.name}</span>
-                                    <span className='text-sm'>Number of tasks {project.tasks && project.tasks.length}</span>
-                                </div>
+                                <Card className='cursor-pointer'>
+                                    <CardHeader onClick={() => { navigateToProject(project) }}>
+                                        <CardTitle>{project.name}</CardTitle>
+                                    </CardHeader>
+                                </Card>
                             </CardComponent>
                         ))
                     }

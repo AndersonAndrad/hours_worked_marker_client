@@ -35,7 +35,6 @@ export class ProjectApi {
             }),
             meta,
           };
-          console.log(items);
           resolve(paginatedResponse);
         })
         .catch((error) => {
