@@ -1,6 +1,6 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Filter, Task } from "@/interfaces/task.interface";
-import { allCalculators, finishedTaskTime } from "@/utils/task.utils";
+import { allCalculators, calculateTotalMoneyEarned, finishedTaskTime } from "@/utils/task.utils";
 import { BookmarkCheck, Clock5, Pause, } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -82,7 +82,7 @@ export function TasksProjectPage() {
     return <Clock5 />
   }
 
-  const columns: string[] = ['Name', 'Description', 'Status', 'Time worked', 'Date', '']
+  const columns: string[] = ['Name', 'Description', 'Status', 'Earned', 'Time worked', 'Date', '']
 
   return (
     <Container>
@@ -113,6 +113,7 @@ export function TasksProjectPage() {
                 </TableCell>
                 <TableCell className="w-1/4">{task.description}</TableCell>
                 <TableCell className="items-center">{taskStatus(task)}</TableCell>
+                <TableCell>{calculateTotalMoneyEarned([task])}</TableCell>
                 <TableCell>{finishedTaskTime([task])}</TableCell>
                 <TableCell>
                   <div className="flex flex-col">
