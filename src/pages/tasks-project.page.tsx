@@ -8,7 +8,7 @@ import { TaskApi } from "@/application/tasks/task.api";
 import { Container } from "@/components/common/container.component";
 import { Header } from "@/components/common/header.component";
 import { Main } from "@/components/common/main.component";
-import { CreateOrUpdateTask } from "@/components/tasks/createOrUpdateTask.component";
+import { CreateOrUpdateTask } from "@/components/tasks/create-task.component";
 import { FilterTaskProject } from "@/components/tasks/filter-task-project.component";
 import { SideNotation } from "@/components/tasks/side-notations.component";
 import { TaskMenu } from "@/components/tasks/task-menu.component";
