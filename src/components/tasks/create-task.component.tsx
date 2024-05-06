@@ -72,7 +72,7 @@ export function CreateOrUpdateTask({ project, whenCreated }: CreateOrUpdateProps
           <div className='flex flex-col gap-2'>
             <div>
               <ul className='flex flex-row gap-2 flex-wrap'>
-                {preAssembledWords.map(assembledWord => {
+                {preAssembledWords.sort().map(assembledWord => {
                   return (
                     <li>
                       <Badge className='cursor-pointer' onClick={() => setAssmebledWord(assembledWord)}>
