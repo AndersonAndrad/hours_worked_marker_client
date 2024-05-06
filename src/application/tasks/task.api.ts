@@ -1,4 +1,4 @@
-import { Filter, Pause, Task, TaskNotation } from '@/interfaces/task.interface';
+import { Filter, Pause, RegisterTask, Task, TaskNotation } from '@/interfaces/task.interface';
 import { createTasksValidate, updateTasksValidate } from './task.validators';
 
 import { PaginatedResponse } from '@/interfaces/paginate.interface';
@@ -36,21 +36,25 @@ export class TaskApi {
     });
   }
 
-  create(createTaskDto: Pick<Task, 'name' | 'description' | 'project' | 'scheduled'>) {
-    createTasksValidate(createTaskDto);
+  create(createTaskDto: RegisterTask) {
+    try {
+      createTasksValidate(createTaskDto);
 
-    return new Promise((resolve, reject) => {
-      serverApi
-        .post(`${this.TASK_URL}`, createTaskDto)
-        .then(() => {
-          toast('Task created with success');
-          resolve(null);
-        })
-        .catch((error) => {
-          toast('Error to create task', { description: error.message });
-          reject(error);
-        });
-    });
+      return new Promise((resolve, reject) => {
+        serverApi
+          .post(`${this.TASK_URL}`, createTaskDto)
+          .then(() => {
+            toast('Task created with success');
+            resolve(null);
+          })
+          .catch((error) => {
+            toast('Error to create task', { description: error.message });
+            reject(error);
+          });
+      });
+    } catch (error) {
+      toast('Error to create task', { description: (error as any).message });
+    }
   }
 
   delete(taskId: Task['_id']): Promise<void> {
