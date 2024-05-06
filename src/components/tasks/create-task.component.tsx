@@ -15,6 +15,7 @@ import { Project } from '@/interfaces/project.interface';
 import { RegisterTask } from '@/interfaces/task.interface';
 import { PlusIcon } from 'lucide-react';
 import { useState } from 'react';
+import { Badge } from '../ui/badge';
 import { Switch } from '../ui/switch';
 import { Textarea } from '../ui/textarea';
 
@@ -44,6 +45,12 @@ export function CreateOrUpdateTask({ project, whenCreated }: CreateOrUpdateProps
     })
   };
 
+  const preAssembledWords = ['BUG', 'Validação', 'Alinhamento', 'Daily', 'Feature', 'Refact'];
+
+  const setAssmebledWord = (str: string): void => {
+    setTaskName(`[${str}]`);
+  }
+
   return (
     <>
       <Dialog>
@@ -63,6 +70,19 @@ export function CreateOrUpdateTask({ project, whenCreated }: CreateOrUpdateProps
             </span>
           </DialogDescription>
           <div className='flex flex-col gap-2'>
+            <div>
+              <ul className='flex flex-row gap-2 flex-wrap'>
+                {preAssembledWords.map(assembledWord => {
+                  return (
+                    <li>
+                      <Badge className='cursor-pointer' onClick={() => setAssmebledWord(assembledWord)}>
+                        {assembledWord}
+                      </Badge>
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
             <div className="flex flex-col gap-1">
               <label htmlFor="task-name">Name</label>
               <Input
