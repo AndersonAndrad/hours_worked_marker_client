@@ -13,6 +13,10 @@ export interface Task {
   scheduled: boolean;
 }
 
+export interface RegisterTask extends Pick<Task, 'name' | 'description' | 'project' | 'scheduled' | 'finish'> {
+  start?: Date;
+}
+
 export interface Pause {
   _id: string;
   start: Date;
