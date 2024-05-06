@@ -1,20 +1,11 @@
-import { ZodError, z } from "zod";
+import { ZodError, z } from 'zod';
 
-import { Task } from "@/interfaces/task.interface";
-
-export const createTasksValidateSchema = z.object({
-  name: z.string().min(3),
-  description: z.string().min(3),
-  project: z.object({
-    _id: z.string().min(24),
-    name: z.string().min(3),
-    hoursPrice: z.number().int(),
-  }),
-});
+import { Task } from '@/interfaces/task.interface';
+import { organizeErrorsToPresent } from '@/utils/zod.utils';
 
 export const updateTasksValidateSchema = z.object({
-  name: z.string().min(3).optional(),
-  description: z.string().min(3).optional(),
+  name: z.string().min(3).max(50).optional(),
+  description: z.string().min(3).max(250).optional(),
   project: z
     .object({
       _id: z.string().min(24).optional(),
@@ -27,20 +18,26 @@ export const updateTasksValidateSchema = z.object({
   paused: z.boolean().optional(),
 });
 
-export const createTasksValidate = (
-  task: Pick<Task, "name" | "description" | "project">
-) => {
+export const createTasksValidate = (task: Pick<Task, 'name' | 'description' | 'project'>) => {
   try {
-    createTasksValidateSchema.parse(task);
+    z.object({
+      name: z.string().min(3).max(50),
+      description: z.string().min(3).max(250),
+      project: z.object({
+        _id: z.string().min(24),
+        name: z.string().min(3),
+        hoursPrice: z.number().int(),
+      }),
+    }).parse(task);
   } catch (error) {
     if (error instanceof ZodError) {
-      throw new Error(JSON.parse(error.message));
+      throw new Error(organizeErrorsToPresent(error));
     }
     throw error;
   }
 };
 
-export const updateTasksValidate = (task: Partial<Omit<Task, "start">>) => {
+export const updateTasksValidate = (task: Partial<Omit<Task, 'start'>>) => {
   try {
     updateTasksValidateSchema.parse(task);
   } catch (error) {

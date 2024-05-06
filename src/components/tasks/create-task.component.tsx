@@ -61,11 +61,12 @@ export function CreateOrUpdateTask({ project, whenCreated }: CreateOrUpdateProps
           </DialogDescription>
           <div className='flex flex-col gap-2'>
             <div className="flex flex-col gap-1">
-              <label htmlFor="task-description">Name</label>
+              <label htmlFor="task-name">Name</label>
               <Input
-                id="task-description"
+                id="task-name"
                 onChange={(event) => setTaskName(event.target.value)}
                 value={taskName}
+                maxLength={50}
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -75,6 +76,7 @@ export function CreateOrUpdateTask({ project, whenCreated }: CreateOrUpdateProps
                 onChange={(event) => setTaskDescription(event.target.value)}
                 value={taskDescription}
                 className='resize-none'
+                maxLength={250}
               />
             </div>
             <div className='flex flex-row items-center gap-1'>
