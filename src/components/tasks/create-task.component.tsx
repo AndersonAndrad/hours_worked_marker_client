@@ -12,6 +12,7 @@ import { TaskApi } from '@/application/tasks/task.api';
 import { Button } from '@/components/ui/button.tsx';
 import { Input } from '@/components/ui/input.tsx';
 import { Project } from '@/interfaces/project.interface';
+import { RegisterTask } from '@/interfaces/task.interface';
 import { PlusIcon } from 'lucide-react';
 import { useState } from 'react';
 import { Switch } from '../ui/switch';
@@ -29,12 +30,14 @@ export function CreateOrUpdateTask({ project, whenCreated }: CreateOrUpdateProps
   const [scheduled, setScheduled] = useState<boolean>(false);
 
   const registerTask = async () => {
-    await taskApi.create({
+    const data: RegisterTask = {
       name: taskName,
       description: taskDescription,
       project,
       scheduled
-    }).then(() => {
+    }
+
+    await taskApi.create(data).then(() => {
       whenCreated();
       setTaskName('');
       setTaskDescription('');

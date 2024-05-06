@@ -4,6 +4,7 @@ import { createTasksValidate, updateTasksValidate } from './task.validators';
 import { PaginatedResponse } from '@/interfaces/paginate.interface';
 import { convertCentsToMoney } from '@/utils/currency.utils';
 import { buildParamsFromObject } from '@/utils/http.utils';
+import { removeUnecessaryWhiteSpace } from '@/utils/string.utils';
 import { toast } from 'sonner';
 import serverApi from '../../infra/api/server.api';
 
@@ -37,6 +38,14 @@ export class TaskApi {
   }
 
   create(createTaskDto: RegisterTask) {
+    createTaskDto.name = removeUnecessaryWhiteSpace(createTaskDto.name);
+    createTaskDto.description = removeUnecessaryWhiteSpace(createTaskDto.description);
+
+    if (createTaskDto.scheduled) {
+      delete createTaskDto.start;
+      delete createTaskDto.finish;
+    }
+
     try {
       createTasksValidate(createTaskDto);
 
@@ -54,6 +63,7 @@ export class TaskApi {
       });
     } catch (error) {
       toast('Error to create task', { description: (error as any).message });
+      throw new Error(error as any);
     }
   }
 
