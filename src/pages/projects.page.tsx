@@ -5,7 +5,7 @@ import { ProjectApi } from '@/application/project/project.api';
 import { Container } from '@/components/common/container.component';
 import { FooterPagination } from '@/components/common/footer-pagination.component';
 import { Main } from '@/components/common/main.component';
-import { CreateOrUpdateProject } from '@/components/project/createOrUpdate.component';
+import { CreateOrUpdateProject } from '@/components/project/create-project.component';
 import { MenuActionProject } from '@/components/project/menu-action-project.component';
 import { Project } from '@/interfaces/project.interface';
 import { maskMoney } from '@/utils/currency.utils';
@@ -22,7 +22,7 @@ export function ProjectsPage() {
     })
   }
 
-  const columns: string[] = ['Name', 'Price per hour', 'Number of tasks', '']
+  const columns: string[] = ['Name', 'Price per hour', 'Expected hours per day', 'Number of tasks', '']
 
   return (
     <Container>
@@ -44,6 +44,7 @@ export function ProjectsPage() {
               <TableRow key={project._id}>
                 <TableCell>{project.name}</TableCell>
                 <TableCell>{maskMoney(project.hoursPrice)}</TableCell>
+                <TableCell>{project.expectedHoursPerDay ?? 0}</TableCell>
                 <TableCell>{project.tasks && project.tasks.length}</TableCell>
                 <TableCell><MenuActionProject project={project} refresh={() => loadProjects()} /></TableCell>
               </TableRow>

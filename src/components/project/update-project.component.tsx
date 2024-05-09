@@ -1,10 +1,10 @@
+import { UpdateProject as IUpdateProject, Project } from "@/interfaces/project.interface";
 import { useEffect, useState } from "react";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader } from "../ui/dialog";
 
 import { ProjectApi } from "@/application/project/project.api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Project } from "@/interfaces/project.interface";
 
 interface UpdateProjectProps {
   project: Project;
@@ -18,6 +18,7 @@ export function UpdateProject(props: UpdateProjectProps) {
 
   const [name, setName] = useState<string>('')
   const [hoursPrice, setHoursPrice] = useState<number>(0)
+  const [expectedHoursPerDay, setExpectedHoursPerDay] = useState<number>(0);
 
   useEffect(() => {
     setName(project.name);
@@ -25,10 +26,13 @@ export function UpdateProject(props: UpdateProjectProps) {
   }, [project])
 
   const updateProject = async () => {
-    await projectApi.update(project._id, {
+    const projectToUpdate: IUpdateProject = {
       name,
-      hoursPrice
-    }).then(() => onClose())
+      hoursPrice,
+      expectedHoursPerDay,
+    }
+
+    await projectApi.update(project._id, projectToUpdate).then(() => onClose())
   }
 
   return (
@@ -36,8 +40,8 @@ export function UpdateProject(props: UpdateProjectProps) {
       <DialogContent>
         <DialogHeader className="font-bold">Update project</DialogHeader>
         <DialogDescription>Update the project with basic information.</DialogDescription>
-        <div className="flex flex-row gap-3">
-          <section className="flex flex-col gap-2">
+        <div className="flex flex-col gap-3">
+          <section className="flex w-full flex-col gap-2">
             <label htmlFor="project-name">Project name</label>
             <Input
               id="project-name"
@@ -46,15 +50,26 @@ export function UpdateProject(props: UpdateProjectProps) {
             />
           </section>
 
-          <section className="flex flex-col gap-2">
-            <label htmlFor="project-price-hour">Price per hour</label>
-            <Input
-              id="project-price-hour"
-              type="number"
-              onChange={(event) => setHoursPrice(Number(event.target.value))}
-              value={hoursPrice}
-            />
-          </section>
+          <div className="grid grid-cols-2 gap-3">
+            <section className="flex flex-col gap-2">
+              <label htmlFor="project-price-hour">Price per hour</label>
+              <Input
+                id="project-price-hour"
+                type="number"
+                onChange={(event) => setHoursPrice(Number(event.target.value))}
+                value={hoursPrice}
+              />
+            </section>
+            <section className="flex flex-col gap-2">
+              <label htmlFor="expected-hours-per-day">Expected hours per day</label>
+              <Input
+                id="expected-hours-per-day"
+                type="number"
+                onChange={(event) => setExpectedHoursPerDay(Number(event.target.value))}
+                value={expectedHoursPerDay}
+              />
+            </section>
+          </div>
         </div>
         <DialogFooter>
           <DialogClose>

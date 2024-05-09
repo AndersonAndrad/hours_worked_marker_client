@@ -1,14 +1,33 @@
+import { CreateProject, Project, UpdateProject } from '@/interfaces/project.interface';
+
 import serverApi from '@/infra/api/server.api';
 import { PaginatedResponse } from '@/interfaces/paginate.interface';
-import { Project } from '@/interfaces/project.interface';
 import { convertCentsToMoney } from '@/utils/currency.utils';
 import { buildParamsFromObject } from '@/utils/http.utils';
 import { toast } from 'sonner';
 
+/**
+ * @todo implement validate to all operations
+ */
 export class ProjectApi {
   private readonly PROJECT_URL: string = 'project';
 
-  update(projectId: Project['_id'], project: Partial<Omit<Project, '_id'>>): Promise<void> {
+  create(project: CreateProject): Promise<void> {
+    return new Promise((resolve, reject) => {
+      serverApi
+        .post(`${this.PROJECT_URL}`, project)
+        .then(() => {
+          toast('Project created with successfully.');
+          resolve();
+        })
+        .catch((error) => {
+          toast('An error occurred while trying to create the project.', { description: error.message });
+          reject(error);
+        });
+    });
+  }
+
+  update(projectId: Project['_id'], project: UpdateProject): Promise<void> {
     return new Promise((resolve, reject) => {
       serverApi
         .patch(`${this.PROJECT_URL}/${projectId}`, project)
