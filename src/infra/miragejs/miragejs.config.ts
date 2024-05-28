@@ -1,9 +1,9 @@
-import { SubTask, Task } from "@/interfaces/task.interface.ts";
-import { Model, createServer } from "miragejs";
+import { SubTask, Task } from '@/interfaces/task.interface.ts';
+import { Model, createServer } from 'miragejs';
 
-import { Project } from "@/interfaces/project.interface";
-import { generateHash } from "@/utils/base64.utils";
-import { faker } from "@faker-js/faker";
+import { Project } from '@/interfaces/project.interface';
+import { generateHash } from '@/utils/base64.utils';
+import { faker } from '@faker-js/faker';
 
 export const makeServer = () => {
   return createServer({
@@ -23,7 +23,7 @@ export const makeServer = () => {
           hourPrice: faker.number.float(),
         };
 
-        server.create("project", project as any);
+        server.create('project', project as any);
 
         Array.from({ length: 10 }).map(() => {
           const task: Task = {
@@ -37,16 +37,16 @@ export const makeServer = () => {
             subTasks: [],
           };
 
-          server.create("task", task as any);
+          server.create('task', task as any);
         });
       });
     },
 
     routes() {
-      this.namespace = "api";
+      this.namespace = 'api';
 
       /* projects */
-      this.post("/projects", (schema, request) => {
+      this.post('/projects', (schema, request) => {
         const { name, hourPrice } = request.requestBody as any;
 
         const project: Project = {
@@ -57,11 +57,11 @@ export const makeServer = () => {
           tasks: [],
         };
 
-        return schema.create("project", project as any).attrs;
+        return schema.create('project', project as any).attrs;
       });
 
-      this.get("/projects", (schema) => {
-        const projects = schema.all("project").models;
+      this.get('/projects', (schema) => {
+        const projects = schema.all('project').models;
 
         return {
           items: projects ?? [],
@@ -69,15 +69,15 @@ export const makeServer = () => {
       });
 
       /* tasks */
-      this.post("/tasks", (schema, request) => {
+      this.post('/tasks', (schema, request) => {
         const body: {
           taskName: string;
-          project: Omit<Project, "enable" | "tasks">;
+          project: Omit<Project, 'enable' | 'tasks' | 'hashId'>;
         } = request.requestBody as any;
 
         const task: Task = {
           _id: generateHash(),
-          description: "",
+          description: '',
           project: body.project,
           finished: false,
           name: body.taskName,
@@ -86,11 +86,11 @@ export const makeServer = () => {
           subTasks: [],
         };
 
-        return schema.create("task", task as any).attrs;
+        return schema.create('task', task as any).attrs;
       });
 
-      this.get("/tasks/projectId", (schema) => {
-        const tasks = schema.all("task").models as any;
+      this.get('/tasks/projectId', (schema) => {
+        const tasks = schema.all('task').models as any;
 
         return {
           items: tasks ?? [],
@@ -98,9 +98,8 @@ export const makeServer = () => {
       });
 
       /* sub_tasks */
-      this.post("/task/commentary", (schema, request) => {
-        const body: { commentary: string; task: Task } =
-          request.requestBody as any;
+      this.post('/task/commentary', (schema, request) => {
+        const body: { commentary: string; task: Task } = request.requestBody as any;
 
         const subTask: SubTask = {
           _id: generateHash(),
@@ -108,18 +107,18 @@ export const makeServer = () => {
           task: body.task,
         };
 
-        return schema.create("subTask", subTask as any).attrs;
+        return schema.create('subTask', subTask as any).attrs;
       });
 
-      this.get("/task/comentaries", (schema) => {
-        const comentaries = schema.all("subTask").models as any;
+      this.get('/task/comentaries', (schema) => {
+        const comentaries = schema.all('subTask').models as any;
 
         return {
           items: comentaries ?? [],
         };
       });
 
-      this.delete("/task/commentary/:commentaryId", (schema, request) => {});
+      this.delete('/task/commentary/:commentaryId', (schema, request) => {});
     },
   });
 };
