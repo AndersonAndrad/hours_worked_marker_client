@@ -1,10 +1,11 @@
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+import { Authentication } from "@/application/authentication/default-authentication.api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { DefaultAuthentication } from "@/interfaces/authentication.interface";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -17,10 +18,10 @@ enum TypeTab {
  * @todo pass all use state to form
  */
 export function AuthenticatePage() {
-  const [seePassword, setSeePassword] = useState<boolean>(false);
+  const authentication = new Authentication();
 
   const LoginSchema = z.object({
-    nickNameOrEmail: z.string()
+    login: z.string()
       .min(3, { message: 'User name must be at least 3 characters.' })
       .max(50, { message: 'User name must be up to 50 characters long.' })
       .trim(),
@@ -58,7 +59,7 @@ export function AuthenticatePage() {
   const loginForm = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
-      nickNameOrEmail: '',
+      login: '',
       password: ''
     }
   })
@@ -74,8 +75,11 @@ export function AuthenticatePage() {
     }
   });
 
-  const onSubmit = (data: any) => {
-    console.log({ data });
+  const onSubmit = async () => { }
+
+  const onLogin = async (): Promise<void> => {
+    const data: DefaultAuthentication = loginForm.getValues();
+    await authentication.defaultAuthentication(data);
   }
 
   return (
@@ -177,7 +181,7 @@ export function AuthenticatePage() {
             <form>
               <FormField
                 control={loginForm.control}
-                name='nickNameOrEmail'
+                name='login'
                 render={({ field, fieldState }) => (
                   <FormItem>
                     <FormLabel>NickName / Email</FormLabel>
@@ -207,7 +211,7 @@ export function AuthenticatePage() {
                 )}
               >
               </FormField>
-              <Button className="w-full" variant='secondary' type="submit">{TypeTab.login}</Button>
+              <Button className="w-full" variant='secondary' type="button" onClick={async () => await onLogin()}>{TypeTab.login}</Button>
             </form>
           </Form>
         </TabsContent>
