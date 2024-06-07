@@ -2,7 +2,7 @@ import axios from "axios";
 import { toast } from "sonner";
 
 const serverApi = axios.create({
-  baseURL: "http://localhost:4000",
+  baseURL: process.env.REACT_APP_API_SERVER || 'http://localhost:4000',
   headers: {
     Accept: "*/*",
     "Content-Type": "application/json",

@@ -70,7 +70,7 @@ export function CreateOrUpdateProject({ subonLoadProjectsmitted }: CreateOrUpdat
             <Button variant={'secondary'}>Cancel</Button>
           </DialogClose>
           <DialogClose>
-            <Button onClick={() => createOrUpdateProject()}>Save</Button>
+            <Button id="button-submit-project" onClick={() => createOrUpdateProject()}>Save</Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>
