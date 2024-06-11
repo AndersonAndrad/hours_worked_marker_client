@@ -1,11 +1,18 @@
 import axios from "axios";
 import { toast } from "sonner";
 
+const getToken = (): string => {
+  const token = localStorage.getItem('authorization')
+
+  return token ?? ''
+}
+
 const serverApi = axios.create({
   baseURL: "http://localhost:4000",
   headers: {
     Accept: "*/*",
     "Content-Type": "application/json",
+    "Authorization": getToken(),
   },
 });
 

@@ -2,12 +2,15 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } fr
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { Authentication } from "@/application/authentication/default-authentication.api";
+import { AuthenticationContext } from "@/contexts/authentication.context";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { DefaultAuthentication } from "@/interfaces/authentication.interface";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "@/components/ui/input";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 enum TypeTab {
   login = 'Login',
@@ -18,7 +21,9 @@ enum TypeTab {
  * @todo pass all use state to form
  */
 export function AuthenticatePage() {
-  const authentication = new Authentication();
+  const navigation = useNavigate();
+  const { setToken } = useContext(AuthenticationContext);
+  const authenticationApi = new Authentication();
 
   const LoginSchema = z.object({
     login: z.string()
@@ -79,7 +84,11 @@ export function AuthenticatePage() {
 
   const onLogin = async (): Promise<void> => {
     const data: DefaultAuthentication = loginForm.getValues();
-    await authentication.defaultAuthentication(data);
+    const jwt = await authenticationApi.defaultAuthentication(data);
+
+    if (jwt) navigation('/');
+
+    setToken(jwt);
   }
 
   return (

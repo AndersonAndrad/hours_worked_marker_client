@@ -1,5 +1,5 @@
-import serverApi from "@/infra/api/server.api";
 import { DefaultAuthentication } from "@/interfaces/authentication.interface";
+import serverApi from "@/infra/api/server.api";
 import { toast } from "sonner";
 
 export class Authentication {
