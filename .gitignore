@@ -24,3 +24,7 @@ dist-ssr
 *.sw?
 
 docker-compose.yml
+
+.env
+test-results
+playwright-report
