@@ -15,14 +15,16 @@ export const AuthenticationContext = createContext<AuthenticationProps>({} as Au
 export function AuthenticationProvider({ children }: { children: ReactElement }) {
   const [localToken, setLocalToken] = useState<string | undefined>('');
 
+  const localStorageKey: string = 'authorization';
+
   const setToken = (token: string): void => {
     setLocalToken(token);
 
-    localStorage.setItem('authorization', token);
+    localStorage.setItem(localStorageKey, token);
   }
 
   const retrieveUser = (): User | undefined => {
-    const localStorageToken = localStorage.getItem('authorization');
+    const localStorageToken = localStorage.getItem(localStorageKey);
 
     if (!localStorageToken) return undefined
 
@@ -31,6 +33,7 @@ export function AuthenticationProvider({ children }: { children: ReactElement })
 
   const singOut = (): void => {
     setLocalToken(undefined);
+    localStorage.removeItem(localStorageKey);
   };
 
   return (

@@ -1,5 +1,5 @@
 import { AuthenticationContext } from "@/contexts/authentication.context";
-import { AvatarIcon } from "@radix-ui/react-icons";
+import { SideUser } from "../user/side-user.component";
 import { useContext } from "react";
 
 export function Navbar() {
@@ -13,8 +13,7 @@ export function Navbar() {
         <span>{user?.name}</span>
         <span className="font-thin text-sm">{user?.email}</span>
       </div>
-
-      <AvatarIcon width='40' height='40' />
+      <SideUser />
     </div>
   )
 }
