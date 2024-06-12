@@ -15,5 +15,5 @@ export function buildParamsFromObject(object: any) {
     });
   }
 
-  return params.toString();
+  return `?${params.toString()}`;
 }

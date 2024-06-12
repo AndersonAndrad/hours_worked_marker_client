@@ -16,10 +16,8 @@ export function ProjectDashboard() {
   const dashboardApi = new DashboardApi();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [projectName, setProjectName] = useState<string>('no projects researched');
-  const { finishedTask, moneyEarned, openedTask, pauseTask } = allCalculators(tasks)
+  const { finishedTask, moneyEarned } = allCalculators(tasks)
   const [project, setProject] = useState<Project>();
-
-  console.log(tasks);
 
   const hoursToWork: number = CalcuateExpectedHoursToWork({ expectedHoursPerDay: project?.expectedHoursPerDay ?? 0, fullMonth: true });
   const calculateEspectedMoney = calculateEstimatedEarned(hoursToWork, project?.hoursPrice ?? 0);
@@ -35,7 +33,7 @@ export function ProjectDashboard() {
     const finalFilter: Filter = {}
 
     if (filter?.project) {
-      finalFilter['projectIds'] = [filter.project._id]
+      finalFilter['hashId'] = [filter.project.hashId]
       setProjectName(filter.project.name);
       setProject(filter.project);
     }

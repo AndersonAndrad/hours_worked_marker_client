@@ -45,7 +45,7 @@ export class ProjectApi {
   findAll(filter?: any): Promise<PaginatedResponse<Project>> {
     return new Promise((resolve, reject) => {
       serverApi
-        .get(`${this.PROJECT_URL}/find-all?${buildParamsFromObject(filter)}`)
+        .get(`${this.PROJECT_URL}/find-all${buildParamsFromObject(filter)}`)
         .then(({ data }) => {
           const { items, meta } = data as PaginatedResponse<Project>;
           const paginatedResponse: PaginatedResponse<Project> = {

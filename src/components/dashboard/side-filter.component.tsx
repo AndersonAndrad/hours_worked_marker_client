@@ -39,8 +39,8 @@ export function SideFilterDashboard({ filter }: SideFilterDashboardProps) {
     filter(finalFilter);
   }
 
-  const handleStringToInt = (projectId: string) => {
-    const project = projects.find(project => project._id === projectId)
+  const handleStringToInt = (hashId: string) => {
+    const project = projects.find(project => project.hashId === hashId)
     setProject(project)
   }
 
@@ -58,7 +58,7 @@ export function SideFilterDashboard({ filter }: SideFilterDashboardProps) {
             <SelectContent position="popper">
               {projects.map(project => {
                 return (
-                  <SelectItem key={project._id} value={project._id} className="cursor-pointer">
+                  <SelectItem key={project._id} value={project.hashId} className="cursor-pointer">
                     {project.name}
                   </SelectItem>
                 )

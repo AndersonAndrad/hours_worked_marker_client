@@ -14,13 +14,9 @@ export const formatHoursToDDHHMMSS = (hours: number): string => {
 };
 
 export const parseDDHHMMSSToHours = (duration: string): string => {
-  const parts = duration.split(':');
-  const days = parseInt(parts[0], 10);
-  const hours = parseInt(parts[1], 10);
-  const minutes = parseInt(parts[2], 10);
-  const seconds = parseInt(parts[3], 10);
+  const [days, hours, minutes, seconds] = duration.split(':');
 
-  const totalHours = days * 24 + hours + minutes / 60 + seconds / 3600;
+  const totalHours = Number(days) * 24 + Number(hours) + Number(minutes) / 60 + Number(seconds) / 3600;
 
   return totalHours.toFixed(2);
 };

@@ -33,7 +33,7 @@ export function SideMenu() {
 
       // Projects
       { label: 'Dashboard', path: '/project/dashboard', disabled: false, icon: LayoutDashboard, parent: MenuAccordion.PROJECTS, selected: false, id: generateHash() },
-      { label: 'Projects', path: '/projects', disabled: false, icon: FolderRoot, parent: MenuAccordion.PROJECTS, selected: false, id: generateHash() },
+      { label: 'List projects', path: '/projects', disabled: false, icon: FolderRoot, parent: MenuAccordion.PROJECTS, selected: false, id: generateHash() },
       { label: 'Tasks', path: '/tasks', disabled: false, icon: FolderGit2, parent: MenuAccordion.PROJECTS, selected: false, id: generateHash() },
 
       // Financy

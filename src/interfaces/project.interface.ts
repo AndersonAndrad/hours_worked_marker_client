@@ -4,6 +4,7 @@ export interface Project {
   _id: string;
   name: string;
   enable: boolean;
+  hashId: string;
   tasks: Task[];
   /**
    * save always in cents

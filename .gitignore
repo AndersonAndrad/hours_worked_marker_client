@@ -24,6 +24,12 @@ dist-ssr
 *.sw?
 
 docker-compose.yml
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+.env
 
 .env
 test-results

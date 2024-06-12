@@ -35,17 +35,17 @@ export function TasksProjectPage() {
     if (filter && objectIsNotEmpty(filter)) {
       final = filter
 
-      final['projectIds'] = [project._id];
+      final['hashId'] = [project.hashId];
 
       if (filter?.scheduled) {
         final = {
-          projectIds: [project._id],
+          hashId: [project.hashId],
           scheduled: filter.scheduled
         }
       }
     } else {
       final = {
-        projectIds: [project._id],
+        hashId: [project.hashId],
         start: new Date(),
         finish: new Date(),
       }
@@ -54,7 +54,7 @@ export function TasksProjectPage() {
 
       if (filter?.scheduled) {
         final = {
-          projectIds: [project._id],
+          hashId: [project.hashId],
           scheduled: filter.scheduled
         }
       }
