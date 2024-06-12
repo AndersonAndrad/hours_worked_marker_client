@@ -1,8 +1,8 @@
 import { Filter, Task } from '@/interfaces/task.interface';
 
-import serverApi from '@/infra/api/server.api';
-import { convertCentsToMoney } from '@/utils/currency.utils';
 import { buildParamsFromObject } from '@/utils/http.utils';
+import { convertCentsToMoney } from '@/utils/currency.utils';
+import serverApi from '@/infra/api/server.api';
 import { toast } from 'sonner';
 
 export class DashboardApi {
@@ -11,7 +11,7 @@ export class DashboardApi {
   findAll(filter?: Filter): Promise<Task[]> {
     return new Promise((resolve, reject) => {
       serverApi
-        .get(`${this.DASHBOARD_URL}/tasks?${buildParamsFromObject(filter)}`)
+        .get(`${this.DASHBOARD_URL}/tasks${buildParamsFromObject(filter)}`)
         .then(({ data }) => {
           let tasks = data as Task[];
 

@@ -2,11 +2,11 @@ import { Filter, Pause, RegisterTask, Task, TaskNotation } from '@/interfaces/ta
 import { createTasksValidate, updateTasksValidate } from './task.validators';
 
 import { PaginatedResponse } from '@/interfaces/paginate.interface';
-import { convertCentsToMoney } from '@/utils/currency.utils';
 import { buildParamsFromObject } from '@/utils/http.utils';
+import { convertCentsToMoney } from '@/utils/currency.utils';
 import { removeUnecessaryWhiteSpace } from '@/utils/string.utils';
-import { toast } from 'sonner';
 import serverApi from '../../infra/api/server.api';
+import { toast } from 'sonner';
 
 export class TaskApi {
   private TASK_URL: string = 'tasks';
@@ -14,7 +14,7 @@ export class TaskApi {
   findAll(filter?: Filter): Promise<PaginatedResponse<Task>> {
     return new Promise((resolve, reject) => {
       serverApi
-        .get(`${this.TASK_URL}?${buildParamsFromObject(filter)}`)
+        .get(`${this.TASK_URL}${buildParamsFromObject(filter)}`)
         .then(({ data }) => {
           let { items, meta } = data as PaginatedResponse<Task>;
           items = items.map((item) => {
