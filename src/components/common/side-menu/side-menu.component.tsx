@@ -1,4 +1,14 @@
-import { FileBarChart, FolderGit2, FolderRoot, HandCoins, Home, LayoutDashboard, LucideIcon, WalletCards } from "lucide-react";
+import {
+  BookText,
+  FileBarChart,
+  FolderGit2,
+  FolderRoot,
+  HandCoins,
+  Home,
+  LayoutDashboard,
+  LucideIcon,
+  WalletCards,
+} from 'lucide-react';
 import { useEffect, useState } from "react";
 import { Accordion, AccordionContent, AccordionTrigger } from "../../ui/accordion";
 
@@ -22,6 +32,7 @@ enum MenuAccordion {
   PROJECTS = 'projects',
   FINANCY = 'financy',
   USER = 'user',
+  WIKI = 'wiki'
 }
 
 export function SideMenu() {
@@ -30,6 +41,10 @@ export function SideMenu() {
   useEffect(() => {
     const items: MenuItem[] = [
       { label: 'Profile', path: '', disabled: true, icon: Home, parent: MenuAccordion.USER, selected: false, id: generateHash() },
+
+      // wiki
+      {label: 'All wikis', path: '/wiki', disabled: false, icon: BookText, parent: MenuAccordion.WIKI, selected: false, id: generateHash() },
+      {label: 'Documents', path: '/wiki/documents', disabled: false, icon: BookText, parent: MenuAccordion.WIKI, selected: false, id: generateHash() },
 
       // Projects
       { label: 'Dashboard', path: '/project/dashboard', disabled: false, icon: LayoutDashboard, parent: MenuAccordion.PROJECTS, selected: false, id: generateHash() },
