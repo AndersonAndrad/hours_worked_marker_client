@@ -1,12 +1,12 @@
+import { Accordion, AccordionContent, AccordionTrigger } from "../../ui/accordion";
 import { FileBarChart, FolderGit2, FolderRoot, HandCoins, Home, LayoutDashboard, LucideIcon, WalletCards } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Accordion, AccordionContent, AccordionTrigger } from "../../ui/accordion";
 
-import { generateHash } from "@/utils/base64.utils";
-import { firstLetterUppercase } from "@/utils/string.utils";
 import { AccordionItem } from "@radix-ui/react-accordion";
-import packageJson from '../../../../package.json';
 import { SideMenuOption } from "./side-menu-option.component";
+import { firstLetterUppercase } from "@/utils/string.utils";
+import { generateHash } from "@/utils/base64.utils";
+import packageJson from '../../../../package.json';
 
 interface MenuItem {
   label: string;
@@ -42,7 +42,7 @@ export function SideMenu() {
       { label: 'Bills to receive', path: '', disabled: true, icon: HandCoins, parent: MenuAccordion.FINANCY, selected: false, id: generateHash() },
       { label: 'Category', path: '', disabled: true, icon: Home, parent: MenuAccordion.FINANCY, selected: false, id: generateHash() },
       { label: 'Client', path: '', disabled: true, icon: Home, parent: MenuAccordion.FINANCY, selected: false, id: generateHash() },
-      { label: 'Account bank', path: '', disabled: true, icon: WalletCards, parent: MenuAccordion.FINANCY, selected: false, id: generateHash() },
+      { label: 'Account bank', path: '/bank-account', disabled: false, icon: WalletCards, parent: MenuAccordion.FINANCY, selected: false, id: generateHash() },
       { label: 'Cost center', path: '', disabled: true, icon: Home, parent: MenuAccordion.FINANCY, selected: false, id: generateHash() },
       { label: 'Type payment', path: '', disabled: true, icon: Home, parent: MenuAccordion.FINANCY, selected: false, id: generateHash() },
       { label: 'DRE', path: '', disabled: true, icon: FileBarChart, parent: MenuAccordion.FINANCY, selected: false, id: generateHash() },

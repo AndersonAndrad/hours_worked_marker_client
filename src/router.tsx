@@ -1,12 +1,13 @@
-import {
-  createBrowserRouter
-} from "react-router-dom";
 import { App } from "./App";
+import { BankAccountPage } from "./pages/bank-account.page";
 import { NotFound } from "./pages/not-found.page";
 import { ProjectDashboard } from "./pages/project-dashboard.page";
 import { ProjectsPage } from "./pages/projects.page";
-import { TasksProjectPage } from "./pages/tasks-project.page";
 import { TasksPage } from "./pages/tasks.page";
+import { TasksProjectPage } from "./pages/tasks-project.page";
+import {
+  createBrowserRouter
+} from "react-router-dom";
 
 export const router = createBrowserRouter([
   {
@@ -21,6 +22,7 @@ export const router = createBrowserRouter([
        */
       { path: '/project', element: <TasksProjectPage /> },
       { path: '/project/dashboard', element: <ProjectDashboard /> },
+      { path: '/bank-account', element: <BankAccountPage /> },
     ]
   },
 
