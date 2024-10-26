@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { BankAccount } from "@/interfaces/bank-account.interface";
 import { BankAccountApi } from "@/application/bank-account/bank-account.api";
 import { Container } from "@/components/common/container.component";
+import { CreateOrUpdateBankAccount } from "@/components/bank-account/create-bank-account.component";
 import { Main } from "@/components/common/main.component";
 
 export function BankAccountPage() {
@@ -29,6 +30,7 @@ export function BankAccountPage() {
     <Container>
       <header className='flex flex-row items-center justify-between'>
         <span className="text-3xl">Bank accounts</span>
+        <CreateOrUpdateBankAccount submitted={async () => await loadBankAccount()} />
       </header>
       <Main>
         <Table>

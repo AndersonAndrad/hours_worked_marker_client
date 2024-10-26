@@ -28,3 +28,7 @@ export enum TypeBankAccount {
   PJ = 'pessoa_juridica',
   PF = 'pessoa_fisica',
 }
+
+export enum Banks {
+  NUBANK = 'Nubank'
+}

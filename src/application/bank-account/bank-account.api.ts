@@ -7,6 +7,21 @@ import { toast } from 'sonner';
 export class BankAccountApi {
   private readonly BASE_URL: string = 'account-bank'
 
+  create(props: Omit<BankAccount, '_id'>): Promise<void> {
+    return new Promise((resolve, reject) => {
+      serverApi
+        .post(`${this.BASE_URL}`, props)
+        .then(() => {
+          toast('Bank account created successfully.');
+          resolve();
+        })
+        .catch((error) => {
+          toast('An error occurred while trying to create the bank account.', { description: error.message });
+          reject(error);
+        });
+    });
+  }
+
   /**
    * @todo implement filter interface 
    */
