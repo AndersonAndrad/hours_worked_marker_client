@@ -15,5 +15,7 @@ export function buildParamsFromObject(object: any) {
     });
   }
 
-  return `?${params.toString()}`;
+  const queryString: string = params.toString();
+
+  return queryString.length ? `?${queryString}` : ''
 }
