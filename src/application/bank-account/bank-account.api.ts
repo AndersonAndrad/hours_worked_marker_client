@@ -7,6 +7,21 @@ import { toast } from 'sonner';
 export class BankAccountApi {
   private readonly BASE_URL: string = 'account-bank'
 
+  delete(bankAccountId: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      serverApi
+        .delete(`${this.BASE_URL}/${bankAccountId}`)
+        .then(() => {
+          toast('Bank account deleted successfully.');
+          resolve();
+        })
+        .catch((error) => {
+          toast('An error occurred while trying to delete the bank account.', { description: error.message });
+          reject(error);
+        });
+    });
+  }
+
   create(props: Omit<BankAccount, '_id'>): Promise<void> {
     return new Promise((resolve, reject) => {
       serverApi

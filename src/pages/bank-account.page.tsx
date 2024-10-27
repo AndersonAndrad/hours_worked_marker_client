@@ -6,6 +6,7 @@ import { BankAccountApi } from "@/application/bank-account/bank-account.api";
 import { Container } from "@/components/common/container.component";
 import { CreateOrUpdateBankAccount } from "@/components/bank-account/create-bank-account.component";
 import { Main } from "@/components/common/main.component";
+import { MenuActionBankAccount } from "@/components/bank-account/menu-action-bank-account.component";
 
 export function BankAccountPage() {
   const bankAccount = new BankAccountApi();
@@ -39,6 +40,7 @@ export function BankAccountPage() {
               {columns.map((column, index) => (
                 <TableHead key={index}>{column}</TableHead>
               ))}
+              <TableHead></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -47,6 +49,7 @@ export function BankAccountPage() {
                 <TableCell>{bankAccount.name}</TableCell>
                 <TableCell>{bankAccount.bank}</TableCell>
                 <TableCell>{bankAccount.currency}</TableCell>
+                <TableCell><MenuActionBankAccount bankAccount={bankAccount} refresh={async () => await loadBankAccount()}/></TableCell>
               </TableRow>
             ))}
           </TableBody>
