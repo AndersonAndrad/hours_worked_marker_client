@@ -1,3 +1,8 @@
+export interface PaginatedRequest {
+  page: number;
+  itemsPerPage: number;
+}
+
 export interface PaginatedResponse<TypeEntity> extends ErrorResponse {
   items: TypeEntity[];
   meta: Meta;
@@ -9,7 +14,7 @@ export interface ErrorResponse {
     code: string;
   };
 }
-
-interface Meta {
+export interface Meta {
   quantityItems: number;
+  totalPages: number;
 }

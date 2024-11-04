@@ -1,5 +1,6 @@
 import { App } from "./App";
 import { BankAccountPage } from "./pages/bank-account.page";
+import { BillsPage } from "./pages/bills.page";
 import { NotFound } from "./pages/not-found.page";
 import { ProjectDashboard } from "./pages/project-dashboard.page";
 import { ProjectsPage } from "./pages/projects.page";
@@ -23,6 +24,7 @@ export const router = createBrowserRouter([
       { path: '/project', element: <TasksProjectPage /> },
       { path: '/project/dashboard', element: <ProjectDashboard /> },
       { path: '/bank-account', element: <BankAccountPage /> },
+      { path: '/bills', element: <BillsPage /> },
     ]
   },
 
