@@ -14,7 +14,7 @@ interface MenuActionProps {
 export function MenuActionBankAccount(props: MenuActionProps) {
   const { bankAccount, refresh } = props;
 
-  const [deleteOpened, setOpenDelete] = useState<boolean>(false)
+  const [deleteOpened, setOpenDelete] = useState<boolean>(false);
 
   return (
     <>
