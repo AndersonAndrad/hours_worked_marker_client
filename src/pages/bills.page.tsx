@@ -1,26 +1,33 @@
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Bill, BillFindAll } from "@/interfaces/bill.interface";
 import { useEffect, useState } from "react";
 
-import { Bill } from "@/interfaces/bill.interface";
 import { BillApi } from "@/application/bill/bill.api";
 import { Container } from "@/components/common/container.component";
 import { Main } from "@/components/common/main.component";
+import { Paginate } from "@/components/common/paginate.component";
 import { Meta } from "@/interfaces/paginate.interface";
-import { formatBillTextDynamic } from "@/utils/string.utils";
 import { maskMoney } from "@/utils/currency.utils";
+import { formatBillTextDynamic } from "@/utils/string.utils";
 
 export function BillsPage() {
   const billsApi = new BillApi();
 
   const [meta, setMeta] = useState<Meta>({ quantityItems: 0, totalPages: 0 })
   const [bills, setBills] = useState<Bill[]>([])
+  const [filter, setFilter] = useState<BillFindAll>({ page: 1, itemsPerPage: 10 });
 
-  const retrieveBills = async () => {
-    await billsApi.findAll({ page: 1, itemsPerPage: 10 }).then(({ items, meta }) => {
+  const retrieveBills = async (billFilter?: BillFindAll) => {
+    await billsApi.findAll(billFilter ?? filter).then(({ items, meta }) => {
       setBills(items);
       setMeta(meta);
     });
+  }
+
+  const changePage = async (page: number): Promise<void> => {
+    setFilter({ ...filter, page });
+
+    await retrieveBills({ ...filter, page });
   }
 
   useEffect(() => {
@@ -60,29 +67,7 @@ export function BillsPage() {
           </TableBody>
         </Table>
         <footer>
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious>1</PaginationPrevious>
-              </PaginationItem>
-
-              {
-                Array.from({ length: meta.totalPages }).map((_, index) => (
-                  <PaginationItem>
-                    <PaginationLink>{index + 1}</PaginationLink>
-                  </PaginationItem>
-                ))
-              }
-
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-
-              <PaginationItem>
-                <PaginationNext>1</PaginationNext>
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+          <Paginate totalPages={meta.totalPages} onChangePage={(page) => changePage(page)} />
         </footer>
       </Main>
     </Container>
