@@ -3,6 +3,7 @@ import { Bill, BillFindAll } from "@/interfaces/bill.interface";
 import { useEffect, useState } from "react";
 
 import { BillApi } from "@/application/bill/bill.api";
+import { MenuActionBill } from "@/components/bill/menu-action.component";
 import { Container } from "@/components/common/container.component";
 import { Main } from "@/components/common/main.component";
 import { Paginate } from "@/components/common/paginate.component";
@@ -44,6 +45,8 @@ export function BillsPage() {
     <Container>
       <header className='flex flex-row items-center justify-between'>
         <span className="text-3xl">Bills</span>
+
+        <MenuActionBill refresh={() => { }} />
       </header>
       <Main>
         <Table>

@@ -1,7 +1,7 @@
+import serverApi from '@/infra/api/server.api';
 import { BankAccount } from '@/interfaces/bank-account.interface';
 import { PaginatedResponse } from "@/interfaces/paginate.interface";
 import { buildParamsFromObject } from '@/utils/http.utils';
-import serverApi from '@/infra/api/server.api';
 import { toast } from 'sonner';
 
 export class BankAccountApi {
@@ -40,7 +40,7 @@ export class BankAccountApi {
   /**
    * @todo implement filter interface 
    */
-  findAll(filter?: any): Promise<PaginatedResponse<any>> {
+  findAll(filter?: any): Promise<PaginatedResponse<BankAccount>> {
     return new Promise((resolve, reject) => {
       serverApi
         .get(`${this.BASE_URL}${buildParamsFromObject(filter)}`)
