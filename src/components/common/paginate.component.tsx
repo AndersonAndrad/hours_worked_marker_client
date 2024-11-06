@@ -63,8 +63,6 @@ export function Paginate(props: PaginateProps) {
 
 
   const changePage = (page: number): void => {
-    console.log({ page });
-
     onChangePage(page);
     setCurrentPage(page);
   }
